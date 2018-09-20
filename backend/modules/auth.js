@@ -25,7 +25,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                        res.status(200).send(menuOnAuth); 
                     } else {
                         res.status(401).send(menuOffAuth);
-                    }                    
+                    }
                 })
                 .catch(function(error){
                     if (connection && connection.end) connection.end();
@@ -47,6 +47,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
 // post: /auth/reg => { <profile> }
 // resp: status 2** или 4** { msg: [{type: ‘warn’: text: ‘логин не уникален’}] }
+// { login: <login>, password: <password>, email: <email> }
     app.post('/auth/reg', (req, res) => {
         res.send('123');
     });
