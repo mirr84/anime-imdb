@@ -15,7 +15,7 @@ const app  = express();
 
 const port = 8000;
 const db_config = {
-    host: 'y913929d.beget.tech',
+    host: '87.236.19.149',
     user: 'y913929d_anime',
     password: '123456',
     database: 'y913929d_anime'
@@ -24,8 +24,8 @@ const db_config = {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-auth.initAuthApi(app);
-anime.initAuthApi(app);
+auth.initAuthApi(app, mysql, db_config);
+anime.initAuthApi(app, mysql, db_config);
 autocomplete.initAuthApi(app, mysql, db_config);
 
 app.listen(port, () => {

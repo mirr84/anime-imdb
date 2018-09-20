@@ -1,11 +1,39 @@
 "use strict";
 
-module.exports.initAuthApi = (app) => {
+const menuOffAuth = { login: true, reg: true, profile: false, list: true, my_list: false, chatRoom: false };
+const menuOnAuth = { login: false, reg: false, profile: true, list: true, my_list: true, chatRoom: true };
+
+module.exports.initAuthApi = (app, mysql, db_config) => {
 
 // get: /auth/check => Headers { token: <token> }
 // resp: status 2** { menu: [{<menu>, ...}] } или 401 { menu: [<menu>, ...] }
     app.get('/auth/check', (req, res) => {
-        res.send('123');
+        let token = req.headers.token;
+
+        if (token) {     
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then(function(conn){
+                    connection = conn;
+                    var result = conn.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`token` WHERE `token` = '" + token + "' ");
+                    conn.end();
+                    return result;
+                })
+                .then(function(rows){
+                    // res.send(menuOnAuth);
+                    res.send(rows);
+                })
+                .catch(function(error){
+                    if (connection && connection.end) connection.end();
+                    res.send(menuOffAuth);
+                });
+
+
+        } else {
+            res.send(menuOffAuth);
+        }
+        
     });
 
 // post: /auth/login => { login: <login>, password: <password> }

@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports.initAuthApi = (app) => {
+module.exports.initAuthApi = (app, mysql, db_config) => {
 
     // get:  /anime/top100
 // resp: status 2** { anime: [<anime>, ...] }
