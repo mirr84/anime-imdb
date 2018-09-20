@@ -21,17 +21,20 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     return result;
                 })
                 .then(function(rows){
-                    // res.send(menuOnAuth);
-                    res.send(rows);
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
+                       res.status(200).send(menuOnAuth); 
+                    } else {
+                        res.status(401).send(menuOffAuth);
+                    }                    
                 })
                 .catch(function(error){
                     if (connection && connection.end) connection.end();
-                    res.send(menuOffAuth);
+                    res.status(401).send(menuOffAuth);
                 });
 
 
         } else {
-            res.send(menuOffAuth);
+            res.status(401).send(menuOffAuth);
         }
         
     });
