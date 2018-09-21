@@ -7,7 +7,22 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
     app.get('/autocomplete/anime', (req, res) => {
         let name = req.query.name || '';
 
-        res.send('123 ' + name);
+        var connection;
+        mysql.createConnection(db_config)
+	        .then(function(conn){
+	        	connection = conn;
+			    var result = conn.query("SELECT * FROM `" + db_config.database + "`.`anime` WHERE `name` LIKE '%" + name + "%'");
+			    conn.end();
+			    return result;
+			})
+			.then(function(rows){
+			    res.send(rows);
+			})
+			.catch(function(error){
+			    if (connection && connection.end) connection.end();
+				res.send(error);
+			});
+
     });
 
 // get: /autocomplete/genre?name=фэ
