@@ -65,10 +65,10 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 })
                 .then(function(rows){
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
-                    	// ничего не делаем
-                    } else {
-						res.status(401).send({ msg: [{type: 'warn', text: 'логин не уникален'}] });
+                    	res.status(401).send({ msg: [{type: 'warn', text: 'логин не уникален'}] });
 						throw 'логин не уникален';
+                    } else {
+						// ничего не делаем
                     }
                 })
                 .then(function(rows){
