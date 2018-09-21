@@ -3,6 +3,8 @@
 const menuOffAuth = { login: true, reg: true, profile: false, list: true, my_list: false, chatRoom: false };
 const menuOnAuth = { login: false, reg: false, profile: true, list: true, my_list: true, chatRoom: true };
 
+var genMsg = (text = 'что то пошло не так', type = 'warn') => ({ msg: [{type, text}] });
+
 module.exports.initAuthApi = (app, mysql, db_config) => {
 
 // get: /auth/check => Headers { token: <token> }
@@ -13,20 +15,20 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
             let connection;
             mysql.createConnection(db_config)
-                .then(function(conn){
+                .then((conn)=>{
                     connection = conn;
                     var result = conn.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`token` WHERE `token` = '" + token + "' ");
                     conn.end();
                     return result;
                 })
-                .then(function(rows){
+                .then((rows)=>{
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
                        res.status(200).send(menuOnAuth); 
                     } else {
                         res.status(401).send(menuOffAuth);
                     }
                 })
-                .catch(function(error){
+                .catch((error)=>{
                     if (connection && connection.end) connection.end();
                     res.status(401).send(menuOffAuth);
                 });
@@ -51,33 +53,33 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 		let password = req.body.password;
 
 		if (!login)  {
-			res.status(401).send({ msg: [{type: 'warn', text: 'логин не должен быть пустым'}] });
+			res.status(401).send(genMsg('логин не должен быть пустым'));
 		} else 
 		if (!password)  {
-			res.status(401).send({ msg: [{type: 'warn', text: 'пароль не должен быть пустым'}] });
+			res.status(401).send(genMsg('пароль не должен быть пустым'));
 		} else {
 			
 			let connection;
             mysql.createConnection(db_config)
-                .then(function(conn){
+                .then((conn)=>{
                     connection = conn;                    
                     return conn.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' ");
                 })
-                .then(function(rows){
+                .then((rows) => {
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
-                    	res.status(401).send({ msg: [{type: 'warn', text: 'логин не уникален'}] });
+                    	res.status(401).send(rows);
 						throw 'логин не уникален';
                     } else {
 						// ничего не делаем
                     }
                 })
-                .then(function(rows){
+                .then((rows)=>{
 					res.send('регим => ' + login + ' ' + password);
-					conn.end();
+					connection.end();
                 })
-                .catch(function(error){
+                .catch((error)=>{
                     if (connection && connection.end) connection.end();
-                    res.status(401).send({ msg: [{type: 'warn', text: error || 'что то пошло не так'}] });
+                    res.status(401).send(genMsg(error));
                 });
 
 		}        

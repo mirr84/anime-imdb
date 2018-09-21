@@ -9,16 +9,16 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
         var connection;
         mysql.createConnection(db_config)
-	        .then(function(conn){
+	        .then((conn)=>{
 	        	connection = conn;
 			    var result = conn.query("SELECT * FROM `" + db_config.database + "`.`anime` WHERE `name` LIKE '%" + name + "%'");
 			    conn.end();
 			    return result;
 			})
-			.then(function(rows){
+			.then((rows)=>{
 			    res.send(rows);
 			})
-			.catch(function(error){
+			.catch((error)=>{
 			    if (connection && connection.end) connection.end();
 				res.send(error);
 			});
@@ -32,16 +32,16 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
 		var connection;
         mysql.createConnection(db_config)
-	        .then(function(conn){
+	        .then((conn)=>{
 	        	connection = conn;
 			    var result = conn.query("SELECT * FROM `" + db_config.database + "`.`genre` WHERE `name` LIKE '%" + name + "%'");
 			    conn.end();
 			    return result;
 			})
-			.then(function(rows){
+			.then((rows)=>{
 			    res.send(rows);
 			})
-			.catch(function(error){
+			.catch((error)=>{
 			    if (connection && connection.end) connection.end();
 				res.send(error);
 			});
