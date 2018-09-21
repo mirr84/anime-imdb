@@ -9,8 +9,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // resp: status 2** { menu: [{<menu>, ...}] } или 401 { menu: [<menu>, ...] }
     app.get('/auth/check', (req, res) => {
         let token = req.headers.token;
-
-        if (token) {     
+        if (token) {
 
             let connection;
             mysql.createConnection(db_config)
@@ -32,11 +31,9 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     res.status(401).send(menuOffAuth);
                 });
 
-
         } else {
             res.status(401).send(menuOffAuth);
-        }
-        
+        }        
     });
 
 // post: /auth/login => { login: <login>, password: <password> }
@@ -49,7 +46,41 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // resp: status 2** или 4** { msg: [{type: ‘warn’: text: ‘логин не уникален’}] }
 // { login: <login>, password: <password>, email: <email> }
     app.post('/auth/reg', (req, res) => {
-        res.send('123');
+
+		let login = req.body.login;
+		let password = req.body.password;
+
+		if (!login)  {
+			res.status(401).send({ msg: [{type: 'warn', text: 'логин не должен быть пустым'}] });
+		} else 
+		if (!password)  {
+			res.status(401).send({ msg: [{type: 'warn', text: 'пароль не должен быть пустым'}] });
+		} else {
+			
+			let connection;
+            mysql.createConnection(db_config)
+                .then(function(conn){
+                    connection = conn;                    
+                    return conn.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' ");
+                })
+                .then(function(rows){
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
+                    	// ничего не делаем
+                    } else {
+						res.status(401).send({ msg: [{type: 'warn', text: 'логин не уникален'}] });
+						throw 'логин не уникален';
+                    }
+                })
+                .then(function(rows){
+					res.send('регим => ' + login + ' ' + password);
+					conn.end();
+                })
+                .catch(function(error){
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({ msg: [{type: 'warn', text: error || 'что то пошло не так'}] });
+                });
+
+		}        
     });
 
 // get: /auth/profile => Headers { token: <token> }
