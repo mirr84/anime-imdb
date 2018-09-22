@@ -1,5 +1,7 @@
 "use strict";
 
+const md5 = require('md5');
+
 const menuOffAuth = { login: true, reg: true, profile: false, list: true, my_list: false, chatRoom: false };
 const menuOnAuth = { login: false, reg: false, profile: true, list: true, my_list: true, chatRoom: true };
 
@@ -51,6 +53,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
 		let login = req.body.login;
 		let password = req.body.password;
+        let email = req.body.email || '';
 
 		if (!login)  {
 			res.status(401).send(genMsg('логин не должен быть пустым'));
@@ -63,19 +66,24 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
             mysql.createConnection(db_config)
                 .then((conn)=>{
                     connection = conn;                    
-                    return conn.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' ");
+                    return connection.query("SELECT count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' ");
                 })
                 .then((rows) => {
-                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
-                    	res.status(401).send(rows);
-						throw 'логин не уникален';
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1) {
+                    	throw 'логин не уникален';
                     } else {
-						// ничего не делаем
+                        // ничего не делаем
                     }
                 })
                 .then((rows)=>{
-					res.send('регим => ' + login + ' ' + password);
-					connection.end();
+                    return connection.query("INSERT INTO `" + db_config.database + "`.`users` (`login`, `password`) VALUES ('" + login + "', '" + md5(password) + "');");
+                })
+                .then((rows)=>{
+                    return connection.query("INSERT INTO `profile` (`id_user`, `email`) VALUES ('" + rows.insertId + "', '" + email + "');");
+                })
+                .then((rows)=>{
+                    res.sendStatus(200);
+                    connection.end();
                 })
                 .catch((error)=>{
                     if (connection && connection.end) connection.end();
