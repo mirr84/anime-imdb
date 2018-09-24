@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Col, Button, FormGroup, Label, Input } from 'reactstrap';
 import NotificationAlert from 'react-notification-alert';
 import md5 from 'md5';
+import {siteUrl} from "../common/config";
 
 class  Auth extends React.Component {
 
@@ -22,7 +23,7 @@ class  Auth extends React.Component {
     // this.state.password
 
     axios({
-		    url: 'http://y913929d.beget.tech/auth/login',
+		    url: siteUrl + '/auth/login',
 		    method: 'post',
 		    data: {
 		    	login: this.state.login,
@@ -36,7 +37,7 @@ class  Auth extends React.Component {
       ) 
      .catch(
         (error) => { 
-          this.setState({menu: error.response.data});
+          this.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
 
                 this.refs.notify.notificationAlert(
                 {

@@ -19,12 +19,8 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Table,
   Container } from 'reactstrap';
+import {siteUrl} from "./common/config";
 
 class App extends Component {
 
@@ -43,7 +39,7 @@ class App extends Component {
     let headers = localStorage.token ? { 'sessionId': localStorage.token } : '';
 
 		axios({
-		    url: 'http://y913929d.beget.tech/auth/check',
+		    url: siteUrl + '/auth/check',
 		    method: 'get',
 		    headers
 		 })
@@ -54,7 +50,7 @@ class App extends Component {
       ) 
      .catch(
         (error) => { 
-          this.setState({menu: error.response.data});
+          this.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
           if (headers) {
                 this.refs.notify.notificationAlert(
                 {
