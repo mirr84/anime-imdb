@@ -25,6 +25,13 @@ const db_config = {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(cors({
+  'allowedHeaders': ['token', 'Content-Type'],
+  'exposedHeaders': ['token'],
+  'origin': '*',
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue': false
+}));
 
 auth.initAuthApi(app, mysql, db_config);
 anime.initAuthApi(app, mysql, db_config);
