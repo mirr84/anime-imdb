@@ -10,6 +10,7 @@ const mysql = require('promise-mysql');
 const auth = require('./modules/auth');
 const anime = require('./modules/anime');
 const autocomplete = require('./modules/autocomplete');
+const cors = require('cors');
 
 const app  = express();
 
@@ -21,15 +22,9 @@ const db_config = {
     database: 'y913929d_anime'
 }
 
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 auth.initAuthApi(app, mysql, db_config);
 anime.initAuthApi(app, mysql, db_config);
