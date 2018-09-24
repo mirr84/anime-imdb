@@ -18,7 +18,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // get: /auth/check => Headers { token: <token> }
 // resp: status 2** { menu: [{<menu>, ...}] } или 401 { menu: [<menu>, ...] }
     app.get('/auth/check', (req, res) => {
-        let token = req.headers.token;
+        let token = req.headers.sessionId;
         if (token) {
 
             let connection;

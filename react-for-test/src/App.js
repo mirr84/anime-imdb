@@ -67,7 +67,7 @@ class App extends Component {
 		    url: 'http://y913929d.beget.tech/auth/check',
 		    method: 'get',
 		    headers: {
-		        'token': 'test'
+		        'sessionId': 'test'
 		    }
 		 })
 		 .then(response => {
