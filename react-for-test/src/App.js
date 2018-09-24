@@ -61,9 +61,9 @@ class App extends Component {
                     place: 'br',
                     message: (
                         <div>
-                            <div>
+                            <span>
                                 Ошибка токена
-                            </div>
+                            </span>
                         </div>
                     ),
                     type: "info",
@@ -144,9 +144,7 @@ class App extends Component {
         <br />
 
 		<Container>
-		
-          <span> { JSON.stringify(this.state.menu) } </span>
-        
+
         	{ localStorage.section === 'main' || !localStorage.section ? <Main /> : '' }
         	{ localStorage.section === 'auth' ? <Auth /> : '' }	
 			    { localStorage.section === 'reg' ? <Reg /> : '' }	
