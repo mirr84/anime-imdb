@@ -9,6 +9,7 @@ import MyList from './components/myList';
 import List from './components/list';
 
 import NotificationAlert from 'react-notification-alert';
+import axios from 'axios';
 
 import {
   Collapse,
@@ -31,6 +32,7 @@ class App extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.selectSection = this.selectSection.bind(this);
+    this.checkAuth = this.checkAuth.bind(this);
     this.state = { isOpen: false };
   }
 
@@ -55,7 +57,30 @@ class App extends Component {
 	 	);
 	 }
 
+	 checkAuth = () => {
+	 	this.myFunc();
+	 }
+
+  componentDidMount() {
+
+		axios({
+		    url: 'http://y913929d.beget.tech/auth/check',
+		    method: 'get',
+		    headers: {
+		        'token': 'test'
+		    }
+		 })
+		 .then(response => {
+		    console.log(response)
+		 }) 
+		 .catch(err => {
+		    console.log(err);
+		 });
+
+  }
+
   render() {
+
     return (
       <div>
 
