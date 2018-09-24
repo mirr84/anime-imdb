@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+
+import axios from 'axios';
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import NotificationAlert from 'react-notification-alert';
+import md5 from 'md5';
 
 class  Auth extends React.Component {
 
@@ -14,7 +18,44 @@ class  Auth extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('Your favorite flavor is: ' + this.state.login + ' ' + this.state.password );
+    // this.state.login
+    // this.state.password
+
+    axios({
+		    url: 'http://y913929d.beget.tech/auth/login',
+		    method: 'post',
+		    data: {
+		    	login: this.state.login,
+		    	password: md5(this.state.password)
+		    }
+		 })
+		 .then(
+        (response) => { 
+          this.setState({menu: response.data});
+        }
+      ) 
+     .catch(
+        (error) => { 
+          this.setState({menu: error.response.data});
+
+                this.refs.notify.notificationAlert(
+                {
+                    place: 'br',
+                    message: (
+                        <div>
+                            <span>
+                                Ошибка логина или пароля
+                            </span>
+                        </div>
+                    ),
+                    type: "info",
+                    icon: "",
+                    autoDismiss: 5
+                }
+              );
+          }        
+      )
+
     event.preventDefault();
   }
 
@@ -29,6 +70,9 @@ class  Auth extends React.Component {
 render() {
   return (
     <div>
+
+	  <NotificationAlert ref="notify" />
+
       <form onSubmit={this.handleSubmit}>
 
       	<FormGroup row>
