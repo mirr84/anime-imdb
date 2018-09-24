@@ -8,6 +8,8 @@ import Top100 from './components/top100';
 import MyList from './components/myList';
 import List from './components/list';
 
+import NotificationAlert from 'react-notification-alert';
+
 import {
   Collapse,
   Navbar,
@@ -35,31 +37,52 @@ class App extends Component {
   toggle() { this.setState({ isOpen: !this.state.isOpen }); }  
   selectSection (section) { localStorage.section = section; }
 
+	 myFunc() {
+	 	this.refs.notify.notificationAlert(
+	 		{
+			    place: 'br',
+			    message: (
+			        <div>
+			            <div>
+			                Welcome to Now UI Dashboard React
+			            </div>
+			        </div>
+			    ),
+			    type: "info",
+			    icon: "",
+			    autoDismiss: 5
+			}
+	 	);
+	 }
+
   render() {
     return (
       <div>
+
+      	<NotificationAlert ref="notify" />
+
          <Navbar color="light" light expand="md">
           <NavbarBrand href="/" onClick={() => this.selectSection('main')}>Мои анимешки</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('auth')}>Авторизция</NavLink>
+                <NavLink href="/" active={localStorage.section === 'auth'} onClick={() => this.selectSection('auth')}>Авторизция</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('reg')}>Регистрация</NavLink>
+                <NavLink href="/" active={localStorage.section === 'reg'}  onClick={() => this.selectSection('reg')}>Регистрация</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('profile')}>Мой профиль</NavLink>
+                <NavLink href="/" active={localStorage.section === 'profile'} onClick={() => this.selectSection('profile')}>Мой профиль</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('top100')}>Тор 100</NavLink>
+                <NavLink href="/" active={localStorage.section === 'top100'} onClick={() => this.selectSection('top100')}>Тор 100</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('myList')}>Мой список</NavLink>
+                <NavLink href="/" active={localStorage.section === 'myList'} onClick={() => this.selectSection('myList')}>Мой список</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/" onClick={() => this.selectSection('list')}>Полный список</NavLink>
+                <NavLink href="/" active={localStorage.section === 'list'} onClick={() => this.selectSection('list')}>Полный список</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
@@ -68,6 +91,8 @@ class App extends Component {
         <br />
 
 		<Container>
+		
+        	<button onClick={() => this.myFunc()}>Hey</button>
         
         	{ localStorage.section === 'main' || !localStorage.section ? <Main /> : '' }
         	{ localStorage.section === 'auth' ? <Auth /> : '' }	
