@@ -11,51 +11,15 @@ class  Auth extends React.Component {
   constructor(props) {
     super(props);
     this.state = { login: '', password: '' };
-
-	this.handleLoginChange = this.handleLoginChange.bind(this);
-	this.handlePasswordChange = this.handlePasswordChange.bind(this);
-
+    
+  	this.handleLoginChange = this.handleLoginChange.bind(this);
+  	this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
     // this.state.login
     // this.state.password
-
-    axios({
-		    url: siteUrl + '/auth/login',
-		    method: 'post',
-		    data: {
-		    	login: this.state.login,
-		    	password: md5(this.state.password)
-		    }
-		 })
-		 .then(
-        (response) => { 
-          this.setState({menu: response.data});
-        }
-      ) 
-     .catch(
-        (error) => { 
-          this.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
-
-                this.refs.notify.notificationAlert(
-                {
-                    place: 'br',
-                    message: (
-                        <div>
-                            <span>
-                                Ошибка логина или пароля
-                            </span>
-                        </div>
-                    ),
-                    type: "info",
-                    icon: "",
-                    autoDismiss: 5
-                }
-              );
-          }        
-      )
 
     event.preventDefault();
   }
@@ -77,7 +41,7 @@ render() {
       <form onSubmit={this.handleSubmit}>
 
       	<FormGroup row>
-          <Label for="login" sm={2}>Email</Label>
+          <Label for="login" sm={2}>login</Label>
           <Col sm={10}>
             <Input bsSize="sm" type="text" name="login" id="login" placeholder="Логин" value={this.state.login} onChange={this.handleLoginChange} />
           </Col>

@@ -28,50 +28,14 @@ class App extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.selectSection = this.selectSection.bind(this);
-    this.state = { isOpen: false, menu: {} };
+
+    this.state = { isOpen: false, menu: { login: true, reg: true, profile: true, list: true, my_list: true, chatRoom: true } };
   }
 
   toggle() { this.setState({ isOpen: !this.state.isOpen }); }  
   selectSection (section) { localStorage.section = section; }
 
   componentDidMount() {
-
-    let headers = localStorage.token ? { 'sessionId': localStorage.token } : '';
-
-		axios({
-		    url: siteUrl + '/auth/check',
-		    method: 'get',
-		    headers
-		 })
-		 .then(
-        (response) => { 
-          this.setState({menu: response.data});
-        }
-      ) 
-     .catch(
-        (error) => { 
-          this.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
-          if (headers) {
-                this.refs.notify.notificationAlert(
-                {
-                    place: 'br',
-                    message: (
-                        <div>
-                            <span>
-                                Ошибка токена
-                            </span>
-                        </div>
-                    ),
-                    type: "info",
-                    icon: "",
-                    autoDismiss: 5
-                }
-              );
-            localStorage.token = '';
-          }
-        }
-      )
-
   }
 
   render() {
@@ -139,7 +103,7 @@ class App extends Component {
 
         <br />
 
-		<Container>
+		    <Container>
 
         	{ localStorage.section === 'main' || !localStorage.section ? <Main /> : '' }
         	{ localStorage.section === 'auth' ? <Auth /> : '' }	
