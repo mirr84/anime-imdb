@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
+import {connector} from "./store/utils/connector";
+import lifecycle from 'react-pure-lifecycle';
+
+import Menu from './components/menu';
 import Main from './components/main';
 import Auth from './components/auth';
 import Reg from './components/reg';
@@ -8,116 +12,40 @@ import Top100 from './components/top100';
 import MyList from './components/myList';
 import List from './components/list';
 
-import NotificationAlert from 'react-notification-alert';
-import axios from 'axios';
+import {ToastContainer, toast} from "react-toastify";
+import { Container } from 'reactstrap';
 
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Container } from 'reactstrap';
-import {siteUrl} from "./common/config";
-
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
-    this.selectSection = this.selectSection.bind(this);
-
-    this.state = { isOpen: false, menu: { login: true, reg: true, profile: true, list: true, my_list: true, chatRoom: true } };
-  }
-
-  toggle() { this.setState({ isOpen: !this.state.isOpen }); }  
-  selectSection (section) { localStorage.section = section; }
-
-  componentDidMount() {
-  }
-
-  render() {
-
-    return (
-      <div>
-
-      	<NotificationAlert ref="notify" />
-
-         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/" onClick={() => this.selectSection('main')}>Мои анимешки</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-             
-              { 
-                this.state.menu.login ? 
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'auth'} onClick={() => this.selectSection('auth')}>Авторизция</NavLink>
-                  </NavItem> : ''
-              }
-
-              { 
-                this.state.menu.reg ? 
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'reg'}  onClick={() => this.selectSection('reg')}>Регистрация</NavLink>
-                  </NavItem> : ''
-              }
-
-              { 
-                this.state.menu.profile ? 
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'profile'} onClick={() => this.selectSection('profile')}>Мой профиль</NavLink>
-                  </NavItem> : ''
-              }
-
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'top100'} onClick={() => this.selectSection('top100')}>Топ 100</NavLink>
-                  </NavItem>
-
-              { 
-                this.state.menu.my_list ?     
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'myList'} onClick={() => this.selectSection('myList')}>Мой список</NavLink>
-                  </NavItem> : ''
-              }
-
-              { 
-                this.state.menu.list ?   
-                  <NavItem>
-                    <NavLink href="/" active={localStorage.section === 'list'} onClick={() => this.selectSection('list')}>Полный список</NavLink>
-                  </NavItem> : ''
-              }  
-
-              { 
-                !this.state.menu.login ? 
-                  <NavItem>
-                    <NavLink href="/" onClick={() => {}}>Выход</NavLink>
-                  </NavItem> : ''
-              }
-
-            </Nav>
-          </Collapse>
-        </Navbar>
-
-        <br />
-
-		    <Container>
-
-        	{ localStorage.section === 'main' || !localStorage.section ? <Main /> : '' }
-        	{ localStorage.section === 'auth' ? <Auth /> : '' }	
-			    { localStorage.section === 'reg' ? <Reg /> : '' }	
-			    { localStorage.section === 'profile' ? <Profile /> : '' }	
-			    { localStorage.section === 'top100' ? <Top100 /> : '' }
-			    { localStorage.section === 'myList' ? <MyList /> : '' }
-			    { localStorage.section === 'list' ? <List /> : '' }
-
-      	</Container>
-
-      </div>
-    );
-  }
+const methods = {
+    componentDidMount(props) {
+    }
 }
 
-export default App;
+const App = ({state, dispatch}) => {
+
+    return (
+        <div>
+
+            <ToastContainer autoClose={8000} position={toast.POSITION.TOP_RIGHT}/>
+
+            <Menu />
+
+            <br />
+
+            <Container>
+
+                { state.menuReducer.item === 'main' || !state.menuReducer.item ? <Main /> : '' }
+                { state.menuReducer.item === 'auth' ? <Auth /> : '' }
+                { state.menuReducer.item === 'reg' ? <Reg /> : '' }
+                { state.menuReducer.item === 'profile' ? <Profile /> : '' }
+                { state.menuReducer.item === 'top100' ? <Top100 /> : '' }
+                { state.menuReducer.item === 'myList' ? <MyList /> : '' }
+                { state.menuReducer.item === 'list' ? <List /> : '' }
+
+            </Container>
+
+        </div>
+    );
+
+}
+
+export default connector(lifecycle(methods)(App));

@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React  from 'react';
+import {connector} from "../store/utils/connector";
 
-const List = () => {
+const List = ({state, dispatch}) => {
 
   return (
     <div>
@@ -10,4 +11,4 @@ const List = () => {
 
 }
 
-export default List;
+export default connector(List)

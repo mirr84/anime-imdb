@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connector} from "../store/utils/connector";
 
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 
-const Main = () => {
+const Main = ({state, dispatch}) => {
 
   return (
     <div>
@@ -26,4 +27,4 @@ const Main = () => {
 
 }
 
-export default Main;
+export default connector(Main)

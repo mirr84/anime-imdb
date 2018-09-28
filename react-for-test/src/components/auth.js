@@ -1,70 +1,56 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connector} from "../store/utils/connector";
 
-import axios from 'axios';
-import { Col, Button, FormGroup, Label, Input } from 'reactstrap';
-import NotificationAlert from 'react-notification-alert';
-import md5 from 'md5';
-import {siteUrl} from "../common/config";
+import {Col, Button, FormGroup, Label, Input, Form} from 'reactstrap';
+import {doLogin} from "./../services/serviceAuth";
 
-class  Auth extends React.Component {
+const Auth = ({state, dispatch}) => {
 
-  constructor(props) {
-    super(props);
-    this.state = { login: '', password: '' };
-    
-  	this.handleLoginChange = this.handleLoginChange.bind(this);
-  	this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    return (
+        <div>
 
-  handleSubmit(event) {
-    // this.state.login
-    // this.state.password
+            <Form onSubmit={(e) => { e.preventDefault(); doLogin({state, dispatch});}}>
 
-    event.preventDefault();
-  }
+                <FormGroup row>
+                    <Label for="login" sm={2}>Логин</Label>
+                    <Col sm={10}>
+                        <Input bsSize="sm" type="text" name="login" id="login" placeholder="Логин"
+                               value={state.loginReducer.login}
+                               onChange={
+                                   (e) => {
+                                       dispatch.changeLoginInput(e.target.value)
+                                   }
+                               }
+                        />
+                    </Col>
+                </FormGroup>
 
-  handleLoginChange(event) {
-    this.setState({login: event.target.value});
-  }
+                <FormGroup row>
+                    <Label for="password" sm={2}>Пароль</Label>
+                    <Col sm={10}>
+                        <Input bsSize="sm" type="password" name="password" id="password" placeholder="Пароль"
+                               value={state.loginReducer.password}
+                               onChange={(e) => {
+                                   dispatch.changePasswordInput(e.target.value)
+                               }}
+                        />
+                    </Col>
+                </FormGroup>
 
-  handlePasswordChange(event) {
-    this.setState({password: event.target.value});
-  }
+                <FormGroup row>
+                    <Col sm={{size: 10, offset: 2}}>
+                        <Button size="sm"
+                                disabled={!state.loginReducer.login || !state.loginReducer.password}>
+                            Войти
+                        </Button>
+                    </Col>
+                </FormGroup>
 
-render() {
-  return (
-    <div>
+            </Form>
 
-	  <NotificationAlert ref="notify" />
-
-      <form onSubmit={this.handleSubmit}>
-
-      	<FormGroup row>
-          <Label for="login" sm={2}>login</Label>
-          <Col sm={10}>
-            <Input bsSize="sm" type="text" name="login" id="login" placeholder="Логин" value={this.state.login} onChange={this.handleLoginChange} />
-          </Col>
-        </FormGroup>
-
-      	<FormGroup row>
-          <Label for="password" sm={2}>Password</Label>
-          <Col sm={10}>
-            <Input bsSize="sm" type="password" name="password" id="password" placeholder="Пароль"  value={this.state.password} onChange={this.handlePasswordChange}/>
-          </Col>
-        </FormGroup>
-
-        <FormGroup check row>
-          <Col sm={{ size: 10, offset: 2 }}>
-            <Button  type="submit" bsSize="sm">Войти</Button>
-          </Col>
-        </FormGroup>
-
-      </form>
-    </div>
-  )
-}
+        </div>
+    )
 
 }
 
-export default Auth;
+export default connector(Auth)

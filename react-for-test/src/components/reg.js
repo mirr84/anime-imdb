@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connector} from "../store/utils/connector";
 
-const Reg = () => {
+const Reg = ({state, dispatch}) => {
 
   return (
     <div>
@@ -10,4 +11,4 @@ const Reg = () => {
 
 }
 
-export default Reg;
+export default connector(Reg)

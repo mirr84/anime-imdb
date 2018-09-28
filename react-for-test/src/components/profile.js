@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connector} from "../store/utils/connector";
 
-const Profile = () => {
+const Profile = ({state, dispatch}) => {
 
   return (
     <div>
@@ -10,4 +11,4 @@ const Profile = () => {
 
 }
 
-export default Profile;
+export default connector(Profile)

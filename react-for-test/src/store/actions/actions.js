@@ -1,0 +1,41 @@
+import {
+    ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM,
+
+    ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT
+
+} from "./actionConst";
+
+export const actionChangeMenuCollapse = (payload) => (
+    {
+        type: ACTION_MENU_COLLAPSE,
+        payload
+    }
+)
+
+export const actionChangeMenuItem = (payload) => (
+    {
+        type: ACTION_MENU_ITEM,
+        payload
+    }
+)
+
+export const actionChangeIsAuth = (payload) => (
+    {
+        type: ACTION_IS_AUTH,
+        payload
+    }
+)
+
+export const actionChangeLoginInput = (payload) => (
+    {
+        type: ACTION_CHANGE_LOGIN_INPUT,
+        payload
+    }
+)
+
+export const actionChangePasswordInput = (payload) => (
+    {
+        type: ACTION_CHANGE_PASSWORD_INPUT,
+        payload
+    }
+)
