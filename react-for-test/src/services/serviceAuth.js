@@ -1,25 +1,25 @@
-
-// import axios from "axios";
+import axios from "axios";
 // import md5 from 'md5';
 
 import {messages} from "../resources/js/utils";
+import {siteUrl} from "../common/config";
 
-export const checkLogin = (props) => {
-    // axios.post('/api/auth/checkLogin',
-    //     {lang: props.state.loginReducer.lang}
-    // )
-    //     .then(
-    //         resp => {
-    //             props.dispatch.changeIsShowLoginModal(false);
-    //             props.dispatch.changeIsAuth(true);
-    //         },
-    //         err => {
-    //             messages(err.response.data);
-    //             props.dispatch.changeIsShowLoginModal(true);
-    //             props.dispatch.changeIsAuth(false);
-    //         }
-    //     )
-}
+export const checkLogin = (props) =>
+    axios.get(siteUrl + '/auth/check',
+        {
+            headers: {'sessionId': 'token'}
+        }
+    )
+        .then(
+            (resp) => {
+                props.dispatch.changeIsAuth(true);
+                props.dispatch.changeMenuSetItems(resp.data);
+            },
+            (err) => {
+                props.dispatch.changeIsAuth(false);
+                props.dispatch.changeMenuSetItems(err.response.data);
+            }
+        )
 
 export const doLogin = (props) => {
 

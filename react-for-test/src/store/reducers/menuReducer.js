@@ -1,9 +1,10 @@
-import {ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM} from "../actions/actionConst";
+import {ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM, ACTION_MENU_SET_ITEMS} from "../actions/actionConst";
 import {getLocalStorage} from "../utils/getLocalStorage";
 
 const initState = {
     collapse: false,
-    item: ''
+    item: '',
+    menu: {}
 }
 
 export const menuReducer = (state = getLocalStorage('menuReducer', initState), action) => {
@@ -16,6 +17,10 @@ export const menuReducer = (state = getLocalStorage('menuReducer', initState), a
 
     if (action.type === ACTION_MENU_ITEM) {
         newState.item = action.payload;
+    }
+
+    if (action.type === ACTION_MENU_SET_ITEMS) {
+        newState.menu = action.payload;
     }
 
     return newState;

@@ -13,10 +13,17 @@ import MyList from './components/myList';
 import List from './components/list';
 
 import {ToastContainer, toast} from "react-toastify";
-import { Container } from 'reactstrap';
+import {Container} from 'reactstrap';
+import {checkLogin} from "./services/serviceAuth";
 
 const methods = {
     componentDidMount(props) {
+        checkLogin(props)
+            .then (
+                (reault) => {
+                    console.log(props.state.menuReducer);
+                }
+            )
     }
 }
 
@@ -27,19 +34,19 @@ const App = ({state, dispatch}) => {
 
             <ToastContainer autoClose={8000} position={toast.POSITION.TOP_RIGHT}/>
 
-            <Menu />
+            <Menu/>
 
-            <br />
+            <br/>
 
             <Container>
 
-                { state.menuReducer.item === 'main' || !state.menuReducer.item ? <Main /> : '' }
-                { state.menuReducer.item === 'auth' ? <Auth /> : '' }
-                { state.menuReducer.item === 'reg' ? <Reg /> : '' }
-                { state.menuReducer.item === 'profile' ? <Profile /> : '' }
-                { state.menuReducer.item === 'top100' ? <Top100 /> : '' }
-                { state.menuReducer.item === 'myList' ? <MyList /> : '' }
-                { state.menuReducer.item === 'list' ? <List /> : '' }
+                {state.menuReducer.item === 'main' || !state.menuReducer.item ? <Main/> : ''}
+                {state.menuReducer.item === 'auth' ? <Auth/> : ''}
+                {state.menuReducer.item === 'reg' ? <Reg/> : ''}
+                {state.menuReducer.item === 'profile' ? <Profile/> : ''}
+                {state.menuReducer.item === 'top100' ? <Top100/> : ''}
+                {state.menuReducer.item === 'myList' ? <MyList/> : ''}
+                {state.menuReducer.item === 'list' ? <List/> : ''}
 
             </Container>
 

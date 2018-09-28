@@ -12,11 +12,25 @@ import {
     NavbarBrand
 } from 'reactstrap';
 
+import {checkLogin} from "../services/serviceAuth";
+
+//
+
+const goToSection = (props, section) => {
+    checkLogin(props)
+        .then (
+            (result) => {
+                console.log(props.state.menuReducer);
+                props.dispatch.changeMenuItem(section);
+            }
+        )
+}
+
 const Menu = ({state, dispatch}) =>
     (
 
         <Navbar color="light" light expand="md">
-            <NavbarBrand href="#" onClick={() => { dispatch.changeMenuItem('') }}>Мои анимешки</NavbarBrand>
+            <NavbarBrand href="#" onClick={() => goToSection({state, dispatch}, '') }>Мои анимешки</NavbarBrand>
             <NavbarToggler onClick={() => dispatch.changeMenuCollapse(!state.menuReducer.collapse)} />
             <Collapse isOpen={state.menuReducer.collapse} navbar>
                 <Nav className="ml-auto" navbar>
@@ -24,42 +38,42 @@ const Menu = ({state, dispatch}) =>
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'auth'}
-                                     onClick={() => dispatch.changeMenuItem('auth')}>Авторизция</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'auth') }>Авторизция</NavLink>
                         </NavItem>
                     }
 
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'reg'}
-                                     onClick={() => dispatch.changeMenuItem('reg')}>Регистрация</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'reg') }>Регистрация</NavLink>
                         </NavItem>
                     }
 
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'profile'}
-                                     onClick={() => dispatch.changeMenuItem('profile')}>Мой профиль</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'profile') }>Мой профиль</NavLink>
                         </NavItem>
                     }
 
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'top100'}
-                                     onClick={() => dispatch.changeMenuItem('top100')}>Топ 100</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'top100') }>Топ 100</NavLink>
                         </NavItem>
                     }
 
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'myList'}
-                                     onClick={() => dispatch.changeMenuItem('myList')}>Мой список</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'myList') }>Мой список</NavLink>
                         </NavItem>
                     }
 
                     {
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'list'}
-                                     onClick={() => dispatch.changeMenuItem('list')}>Полный список</NavLink>
+                                     onClick={() => goToSection({state, dispatch}, 'list') }>Полный список</NavLink>
                         </NavItem>
                     }
 

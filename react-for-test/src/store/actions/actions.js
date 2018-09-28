@@ -1,5 +1,5 @@
 import {
-    ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM,
+    ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM, ACTION_MENU_SET_ITEMS,
 
     ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT
 
@@ -15,6 +15,13 @@ export const actionChangeMenuCollapse = (payload) => (
 export const actionChangeMenuItem = (payload) => (
     {
         type: ACTION_MENU_ITEM,
+        payload
+    }
+)
+
+export const actionChangeMenuSetItems = (payload) => (
+    {
+        type: ACTION_MENU_SET_ITEMS,
         payload
     }
 )

@@ -16,19 +16,19 @@ import './index.css';
 
 import App from "./App";
 
+import axios from "axios";
+
 const store = createStore(reducer, applyMiddleware(thunkMiddleware));
       store.subscribe(() => localStorage.setItem('store', JSON.stringify(store.getState())));
 
-// axios.interceptors.request.use(
-//     (config) => {
-//         config = Object.assign({}, config);
-//         config.headers.PWT = store.getState().loginReducer.pwt;
-//         return Promise.resolve(config);
-//     },
-//     (error) => {
-//         return Promise.reject(error);
-//     }
-// );
+axios.interceptors.request.use(
+    (config) => {        ;
+        return Promise.resolve(config);
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 ReactDOM.render(
     <Provider store={store}>

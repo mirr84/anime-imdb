@@ -1,5 +1,5 @@
 import {
-    actionChangeMenuCollapse, actionChangeMenuItem,
+    actionChangeMenuCollapse, actionChangeMenuItem, actionChangeMenuSetItems,
 
     actionChangeIsAuth, actionChangeLoginInput, actionChangePasswordInput
 
@@ -13,6 +13,7 @@ export const dispatchs = (dispatch) =>
 
                     changeMenuCollapse: (v) => dispatch(actionChangeMenuCollapse(v)),
                     changeMenuItem: (v) => dispatch(actionChangeMenuItem(v)),
+                    changeMenuSetItems: (v) => dispatch(actionChangeMenuSetItems(v)),
 
                     changeIsAuth: (v) => dispatch(actionChangeIsAuth(v)),
                     changeLoginInput: (v) => dispatch(actionChangeLoginInput(v)),
