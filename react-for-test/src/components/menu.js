@@ -17,13 +17,22 @@ import {checkLogin} from "../services/serviceAuth";
 //
 
 const goToSection = (props, section) => {
-    checkLogin(props)
-        .then (
-            (result) => {
-                console.log(props.state.menuReducer);
-                props.dispatch.changeMenuItem(section);
-            }
-        )
+
+    if (!section)  {
+        props.dispatch.changeMenuItem('');
+    } else {
+        checkLogin(props)
+            .then(
+                (result) => {
+                    console.log(props.state.menuReducer.menu);
+                    if (props.state.menuReducer.menu[section]) {
+                        props.dispatch.changeMenuItem(section);
+                    } else {
+                        // props.dispatch.changeMenuItem('');
+                    }
+                }
+            )
+    }
 }
 
 const Menu = ({state, dispatch}) =>
@@ -36,51 +45,58 @@ const Menu = ({state, dispatch}) =>
                 <Nav className="ml-auto" navbar>
 
                     {
+                        state.menuReducer.menu.login ?
                         <NavItem>
-                            <NavLink href="#" active={state.menuReducer.item === 'auth'}
-                                     onClick={() => goToSection({state, dispatch}, 'auth') }>Авторизция</NavLink>
-                        </NavItem>
+                            <NavLink href="#" active={state.menuReducer.item === 'login'}
+                                     onClick={() => goToSection({state, dispatch}, 'login') }>Авторизция</NavLink>
+                        </NavItem> : ''
                     }
 
                     {
+                        state.menuReducer.menu.reg ?
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'reg'}
                                      onClick={() => goToSection({state, dispatch}, 'reg') }>Регистрация</NavLink>
-                        </NavItem>
+                        </NavItem> : ''
                     }
 
                     {
+                        state.menuReducer.menu.profile ?
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'profile'}
                                      onClick={() => goToSection({state, dispatch}, 'profile') }>Мой профиль</NavLink>
-                        </NavItem>
+                        </NavItem> : ''
                     }
 
                     {
+                        state.menuReducer.menu.top100 ?
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'top100'}
                                      onClick={() => goToSection({state, dispatch}, 'top100') }>Топ 100</NavLink>
-                        </NavItem>
+                        </NavItem> : ''
                     }
 
                     {
+                        state.menuReducer.menu.my_list ?
                         <NavItem>
-                            <NavLink href="#" active={state.menuReducer.item === 'myList'}
-                                     onClick={() => goToSection({state, dispatch}, 'myList') }>Мой список</NavLink>
-                        </NavItem>
+                            <NavLink href="#" active={state.menuReducer.item === 'my_list'}
+                                     onClick={() => goToSection({state, dispatch}, 'my_list') }>Мой список</NavLink>
+                        </NavItem> : ''
                     }
 
                     {
+                        state.menuReducer.menu.list ?
                         <NavItem>
                             <NavLink href="#" active={state.menuReducer.item === 'list'}
                                      onClick={() => goToSection({state, dispatch}, 'list') }>Полный список</NavLink>
-                        </NavItem>
+                        </NavItem> : ''
                     }
 
                     {
+                        !state.menuReducer.menu.login ?
                         <NavItem>
                             <NavLink href="#" onClick={() => {}}>Выход</NavLink>
-                        </NavItem>
+                        </NavItem> : ''
                     }
 
                 </Nav>

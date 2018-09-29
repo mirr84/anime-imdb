@@ -20,8 +20,13 @@ const methods = {
     componentDidMount(props) {
         checkLogin(props)
             .then (
-                (reault) => {
-                    console.log(props.state.menuReducer);
+                (result) => {
+                    console.log(props.state.menuReducer.menu);
+                    if (props.state.menuReducer.menu[props.state.menuReducer.item]) {
+                        //
+                    } else {
+                        props.dispatch.changeMenuItem('');
+                    }
                 }
             )
     }
@@ -41,11 +46,11 @@ const App = ({state, dispatch}) => {
             <Container>
 
                 {state.menuReducer.item === 'main' || !state.menuReducer.item ? <Main/> : ''}
-                {state.menuReducer.item === 'auth' ? <Auth/> : ''}
+                {state.menuReducer.item === 'login' ? <Auth/> : ''}
                 {state.menuReducer.item === 'reg' ? <Reg/> : ''}
                 {state.menuReducer.item === 'profile' ? <Profile/> : ''}
                 {state.menuReducer.item === 'top100' ? <Top100/> : ''}
-                {state.menuReducer.item === 'myList' ? <MyList/> : ''}
+                {state.menuReducer.item === 'my_list' ? <MyList/> : ''}
                 {state.menuReducer.item === 'list' ? <List/> : ''}
 
             </Container>
