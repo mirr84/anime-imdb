@@ -1,5 +1,5 @@
 import {
-    ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM, ACTION_MENU_SET_ITEMS,
+    ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM, ACTION_MENU_SET_ITEMS, ACTION_SET_TOKEN,
 
     ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT
 
@@ -29,6 +29,13 @@ export const actionChangeMenuSetItems = (payload) => (
 export const actionChangeIsAuth = (payload) => (
     {
         type: ACTION_IS_AUTH,
+        payload
+    }
+)
+
+export const actionChangeSetToken = (payload) => (
+    {
+        type: ACTION_SET_TOKEN,
         payload
     }
 )

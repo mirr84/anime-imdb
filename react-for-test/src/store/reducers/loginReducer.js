@@ -1,14 +1,16 @@
 import {
     ACTION_IS_AUTH,
     ACTION_CHANGE_LOGIN_INPUT,
-    ACTION_CHANGE_PASSWORD_INPUT } from "../actions/actionConst";
+    ACTION_CHANGE_PASSWORD_INPUT,
+    ACTION_SET_TOKEN} from "../actions/actionConst";
 
 import {getLocalStorage} from "../utils/getLocalStorage";
 
 const initState = {
     login: 'tester_nsk',
     password: '123',
-    isAuth: false
+    isAuth: false,
+    token: ''
 }
 
 export const loginReducer = (state = getLocalStorage('loginReducer', initState), action) => {
@@ -29,6 +31,14 @@ export const loginReducer = (state = getLocalStorage('loginReducer', initState),
         }
         newState.isAuth = action.payload;
     }
+
+    if (action.type === ACTION_SET_TOKEN) {
+        if (action.payload) {
+            // newState = initState;
+        }
+        newState.token = action.payload;
+    }
+
 
     return newState;
 

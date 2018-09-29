@@ -64,7 +64,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
             mysql.createConnection(db_config)
                 .then((conn)=>{
                     connection = conn;
-                    return connection.query("SELECT `id`, count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' AND `password` = '" + md5(password) + "' ");
+                    return connection.query("SELECT `id`, count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' AND `password` = '" + password + "' ");
                 })
                 .then((rows) => {
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 0) {

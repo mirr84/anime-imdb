@@ -21,9 +21,8 @@ const methods = {
         checkLogin(props)
             .then (
                 (result) => {
-                    console.log(props.state.menuReducer.menu);
                     if (props.state.menuReducer.menu[props.state.menuReducer.item]) {
-                        //
+                        // ничего не делаем
                     } else {
                         props.dispatch.changeMenuItem('');
                     }
