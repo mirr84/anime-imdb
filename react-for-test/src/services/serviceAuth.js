@@ -34,6 +34,7 @@ export const doLogin = (props) =>
                 props.dispatch.changeIsAuth(true);
                 props.dispatch.changeSetToken(resp.data.token);
                 props.dispatch.changeMenuSetItems(resp.data.menu);
+                props.dispatch.changeMenuItem('my_list');
             },
             err => {
                 props.dispatch.changePasswordInput('');
