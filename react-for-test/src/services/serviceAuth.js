@@ -45,3 +45,18 @@ export const doLogin = (props) =>
                 messages();
             }
         )
+
+export const doReg = (props) =>
+    axios.post(siteUrl + '/auth/reg',
+    {
+        login: props.state.loginReducer.login,
+        password: md5(props.state.loginReducer.password),
+        email: props.state.loginReducer.email
+    })
+    .then(
+        resp => {
+        },
+        err => {
+            messages(err.response.data, true);
+        }
+    )

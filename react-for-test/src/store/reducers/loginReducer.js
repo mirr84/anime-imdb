@@ -2,6 +2,7 @@ import {
     ACTION_IS_AUTH,
     ACTION_CHANGE_LOGIN_INPUT,
     ACTION_CHANGE_PASSWORD_INPUT,
+    ACTION_CHANGE_EMAIL_INPUT,
     ACTION_SET_TOKEN} from "../actions/actionConst";
 
 import {getLocalStorage} from "../utils/getLocalStorage";
@@ -10,6 +11,7 @@ const initState = {
     login: 'tester_nsk',
     password: '123',
     isAuth: false,
+    email: 'mail@mail.ru',
     token: ''
 }
 
@@ -39,6 +41,9 @@ export const loginReducer = (state = getLocalStorage('loginReducer', initState),
         newState.token = action.payload;
     }
 
+    if (action.type === ACTION_CHANGE_EMAIL_INPUT) {
+        newState.email = action.payload;
+    }
 
     return newState;
 

@@ -1,14 +1,20 @@
 import {toast} from "react-toastify";
 
-export const messages = (data) => {
+export const messages = (data, isOne=false) => {
 
-    // if (!data) return null;
-    // if (!data.alerts) return null;
-    // if (!Array.isArray(data.alerts)) return null;
-    //
-    // let msgs = data.alerts.map( item => item.msg ).join(', ');
-    // if (msgs.trim().length > 0) toast.warn(msgs);
+    if (!data) return null;
+    if (!data.msg) return null;
+    if (!Array.isArray(data.msg)) return null;
 
-    toast.warn('msgs');
+    if (!isOne) {
+        let msgs = data.msg.map(item => item.text).join(', ');
+        if (msgs.trim().length > 0) toast.warn(msgs);
+    } else {
+        data.msg.forEach(
+            item => {
+                toast[item.type](item.text);
+            }
+        )
+    }
 
 }
