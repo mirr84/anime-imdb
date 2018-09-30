@@ -14,7 +14,7 @@ import {
 
 import {checkLogin} from "../services/serviceAuth";
 
-const goToSection = (props, section) => {
+export const goToSection = (props, section) => {
     if (!section) {
         props.dispatch.changeMenuItem('');
     } else {

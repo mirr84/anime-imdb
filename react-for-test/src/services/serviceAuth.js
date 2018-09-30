@@ -22,9 +22,6 @@ export const checkLogin = (props) =>
             }
         )
 
-// console.log(props.state.loginReducer);
-// props.dispatch.changePasswordInput('');
-// messages();
 export const doLogin = (props) =>
     axios.post(siteUrl + '/auth/login',
         {
@@ -35,14 +32,15 @@ export const doLogin = (props) =>
             resp => {
                 props.dispatch.changePasswordInput('');
                 props.dispatch.changeIsAuth(true);
-                props.dispatch.changeSetToken(resp.data);
-                checkLogin(props);
+                props.dispatch.changeSetToken(resp.data.token);
+                props.dispatch.changeMenuSetItems(resp.data.menu);
             },
             err => {
                 props.dispatch.changePasswordInput('');
                 props.dispatch.changeIsAuth(false);
                 props.dispatch.changeSetToken('');
-                messages();
+                props.dispatch.changeMenuSetItems(err.response.data.menu);
+                messages(err.response.data, true);
             }
         )
 

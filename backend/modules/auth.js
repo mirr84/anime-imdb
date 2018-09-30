@@ -5,7 +5,7 @@ const md5 = require('md5');
 const menuOffAuth = { login: true, reg: true, profile: false, list: true, my_list: false, chatRoom: false };
 const menuOnAuth = { login: false, reg: false, profile: true, list: true, my_list: true, chatRoom: true };
 
-const genMsg = (text = 'что то пошло не так', type = 'warn') => ({ msg: [{type, text}] });
+const genMsg = (text = 'что то пошло не так', type = 'warn') => ([{type, text}]);
 const genToken = (n=100) => {
     let text = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -18,7 +18,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // get: /auth/check => Headers { token: <token> }
 // resp: status 2** { menu: [{<menu>, ...}] } или 401 { menu: [<menu>, ...] }
     app.get('/auth/check', (req, res) => {
-        let token = req.headers.sessionId;
+        let token = req.headers.sessionid;
         if (token) {
 
             let connection;
@@ -30,6 +30,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     return result;
                 })
                 .then((rows)=>{
+                    console.log( 'rows', rows )
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
                        res.status(200).send(menuOnAuth); 
                     } else {
@@ -37,11 +38,13 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     }
                 })
                 .catch((error)=>{
+                    console.log( 'error', error )
                     if (connection && connection.end) connection.end();
                     res.status(401).send(menuOffAuth);
                 });
 
         } else {
+            console.log( 'token is null',  req.headers )
             res.status(401).send(menuOffAuth);
         }        
     });
@@ -54,17 +57,17 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
         let password = req.body.password;
 
         if (!login)  {
-            res.status(401).send(genMsg('логин не должен быть пустым'));
+            res.status(401).send({msg: genMsg('логин не должен быть пустым')});
         } else
         if (!password)  {
-            res.status(401).send(genMsg('пароль не должен быть пустым'));
+            res.status(401).send({msg: genMsg('пароль не должен быть пустым')});
         } else {
 
             let connection;
             mysql.createConnection(db_config)
                 .then((conn)=>{
                     connection = conn;
-                    return connection.query("SELECT `id`, count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' AND `password` = '" + password + "' ");
+                    return connection.query("SELECT `id`, count(*) as `c` FROM `" + db_config.database + "`.`users` WHERE `login` = '" + login + "' AND `password` = '" + md5(password) + "' ");
                 })
                 .then((rows) => {
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 0) {
@@ -80,12 +83,12 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     return token;
                 })
                 .then((rows)=>{
-                    res.status(200).send(rows);
+                    res.status(200).send({token: rows, menu: menuOnAuth});
                     connection.end();
                 })
                 .catch((error)=>{
                     if (connection && connection.end) connection.end();
-                    res.status(401).send(genMsg(error));
+                    res.status(401).send({msg: genMsg(error), menu: menuOffAuth});
                 });
         }
 
@@ -101,10 +104,10 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
         let email = req.body.email || '';
 
 		if (!login)  {
-			res.status(401).send(genMsg('логин не должен быть пустым'));
+			res.status(401).send({msg: genMsg('логин не должен быть пустым')});
 		} else 
 		if (!password)  {
-			res.status(401).send(genMsg('пароль не должен быть пустым'));
+			res.status(401).send({msg: genMsg('пароль не должен быть пустым')});
 		} else {
 			
 			let connection;
@@ -132,7 +135,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 })
                 .catch((error)=>{
                     if (connection && connection.end) connection.end();
-                    res.status(401).send(genMsg(error));
+                    res.status(401).send({msg: genMsg(error)});
                 });
 
 		}        

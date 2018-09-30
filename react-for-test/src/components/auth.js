@@ -9,7 +9,7 @@ const Auth = ({state, dispatch}) => {
     return (
         <div>
 
-            <Form onSubmit={(e) => { e.preventDefault(); doLogin({state, dispatch});}}>
+            <Form onSubmit={(e) => { e.preventDefault(); doLogin({state, dispatch}); }}>
 
                 <FormGroup row>
                     <Label for="login" sm={2}>Логин</Label>
