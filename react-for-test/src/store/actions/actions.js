@@ -1,7 +1,9 @@
 import {
     ACTION_MENU_COLLAPSE, ACTION_MENU_ITEM, ACTION_MENU_SET_ITEMS, ACTION_SET_TOKEN,
 
-    ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT, ACTION_CHANGE_EMAIL_INPUT
+    ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT, ACTION_CHANGE_EMAIL_INPUT,
+
+    ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME
 
 } from "./actionConst";
 
@@ -57,6 +59,20 @@ export const actionChangePasswordInput = (payload) => (
 export const actionChangeEmailInput = (payload) => (
     {
         type: ACTION_CHANGE_EMAIL_INPUT,
+        payload
+    }
+)
+
+export const actionChangeSetAllList = (payload) => (
+    {
+        type: ACTION_CHANGE_SET_ALL_LIST,
+        payload
+    }
+)
+
+export const actionChangeFilterName = (payload) => (
+    {
+        type: ACTION_CHANGE_FILTER_NAME,
         payload
     }
 )

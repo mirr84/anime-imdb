@@ -1,17 +1,11 @@
 "use strict";
 
+const menuOnAuth = require('./utils').menuOnAuth;
+const menuOffAuth = require('./utils').menuOffAuth;
+const genMsg = require('./utils').genMsg;
+const genToken = require('./utils').genToken;
+
 const md5 = require('md5');
-
-const menuOffAuth = { login: true, reg: true, profile: false, list: true, my_list: false, chatRoom: false };
-const menuOnAuth = { login: false, reg: false, profile: true, list: true, my_list: true, chatRoom: true };
-
-const genMsg = (text = 'что то пошло не так', type = 'warn') => ([{type, text}]);
-const genToken = (n=100) => {
-    let text = "";
-    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < n; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
-}
 
 module.exports.initAuthApi = (app, mysql, db_config) => {
 
@@ -30,7 +24,6 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     return result;
                 })
                 .then((rows)=>{
-                    console.log( 'rows', rows )
                     if (Array.isArray(rows) && rows.length === 1 && rows[0].c && rows[0].c === 1) {
                        res.status(200).send(menuOnAuth); 
                     } else {
@@ -38,13 +31,11 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     }
                 })
                 .catch((error)=>{
-                    console.log( 'error', error )
                     if (connection && connection.end) connection.end();
                     res.status(401).send(menuOffAuth);
                 });
 
         } else {
-            console.log( 'token is null',  req.headers )
             res.status(401).send(menuOffAuth);
         }        
     });

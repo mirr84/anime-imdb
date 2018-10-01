@@ -1,5 +1,7 @@
 "use strict";
 
+const genMsg = require('./utils').genMsg;
+
 module.exports.initAuthApi = (app, mysql, db_config) => {
 
     // get:  /anime/top100
@@ -13,7 +15,28 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // post:  /anime/list => Headers { token: <token> } { <filter> }
 // resp: status 2** { anime: [<anime>, ...] } или 401
     app.post('/anime/list', (req, res) => {
-        res.send('123');
+
+        let name = req.body.name;
+
+        let connection;
+        mysql.createConnection(db_config)
+            .then((conn)=>{
+                connection = conn;
+                return connection.query(
+                    "SELECT `id`, `name`, (SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id`) as `genre` " +
+                    "FROM `" + db_config.database + "`.`anime` `a` " +
+                    "WHERE `a`.`only_user` = 0 AND `a`.`name` LIKE '%" + name + "%'"
+                );
+            })
+            .then((rows)=>{
+                res.status(200).send(rows);
+                connection.end();
+            })
+            .catch((error)=>{
+                if (connection && connection.end) connection.end();
+                res.status(401).send({msg: genMsg(error)});
+            });
+
     });
 
 // get: /anime/add?id=<id_anime> => Headers { token: <token> }
