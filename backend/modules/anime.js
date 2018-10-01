@@ -23,7 +23,10 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
             .then((conn)=>{
                 connection = conn;
                 return connection.query(
-                    "SELECT `id`, `name`, (SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id`) as `genre` " +
+                    "SELECT `id`, " +
+                            "`name`, " +
+                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id`) as `genre`, " +
+                            "(SELECT COUNT(*) FROM `anime_user` `c` WHERE `c`.`id_anime` = `a`.id) as `isNoAdd` " +
                     "FROM `" + db_config.database + "`.`anime` `a` " +
                     "WHERE `a`.`only_user` = 0 AND `a`.`name` LIKE '%" + name + "%'"
                 );
