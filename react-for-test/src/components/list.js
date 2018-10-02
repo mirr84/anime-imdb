@@ -32,9 +32,15 @@ const List = ({state, dispatch}) => {
                                        getAllListAnime({state, dispatch});
                                    }
                                }
+                               onBlur={
+                                   () => {
+                                   }
+                               }
                         />
                     </th>
                     <th>Жанр</th>
+                    <th>Сезоны/Серии</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,6 +62,8 @@ const List = ({state, dispatch}) => {
 
                                     <td>{item.name}</td>
                                     <td>{item.genre}</td>
+                                    <td>{item.col_season}/{item.col_part}</td>
+                                    <td>{item.url_image}</td>
                                 </tr>
                         )
                 }

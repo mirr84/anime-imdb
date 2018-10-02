@@ -25,8 +25,10 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 return connection.query(
                     "SELECT `id`, " +
                             "`name`, " +
-                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id`) as `genre`, " +
-                            "(SELECT COUNT(*) FROM `anime_user` `c` WHERE `c`.`id_anime` = `a`.id) as `isNoAdd` " +
+                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) as `genre`, " +
+                            "(SELECT COUNT(*) FROM `anime_user` `c` WHERE `c`.`id_anime` = `a`.id) as `isNoAdd`, " +
+                            "`col_season`, `col_part`, " +
+                            "`url_image` " +
                     "FROM `" + db_config.database + "`.`anime` `a` " +
                     "WHERE `a`.`only_user` = 0 AND `a`.`name` LIKE '%" + name + "%'"
                 );
@@ -45,7 +47,12 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // get: /anime/add?id=<id_anime> => Headers { token: <token> }
 // resp: status 2** или 401 или 5** { msg: [{type: ‘warn’: text: ‘уже есть в твоём списке’}] }
     app.get('/anime/add', (req, res) => {
-        res.send('123');
+
+        let token = req.headers.sessionid;
+        console.log( req.body )
+
+        res.send('');
+
     });
 
 // get: /anime/remote?id=<id_anime> => Headers { token: <token> }
