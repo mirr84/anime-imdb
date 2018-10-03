@@ -75,10 +75,12 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     }
                 })
                 .then((rows)=>{
-                    connection.query("INSERT INTO `" + db_config.database + "`.`anime` (`id_genre`,`name`,`col_season`,`col_part`,`url_image`,`only_user`,`id_origin_anime`) "
-                                        "SELECT `a`.`id_genre`, `a`.`name`, `a`.`col_season`, `a`.`col_part`, `a`.`url_image`, '" + rows[0].id_user + "' AS `only_user`, '" + id_add + "' AS `id_origin_anime`  " +
-                                        "FROM `" + db_config.database + "`.`anime` `a` " +
-                                        "WHERE `a`.`id` = '" + id_add + "'";
+                    connection.query(
+                        "INSERT INTO `" + db_config.database + "`.`anime` (`id_genre`,`name`,`col_season`,`col_part`,`url_image`,`only_user`,`id_origin_anime`) "
+                            "SELECT `a`.`id_genre`, `a`.`name`, `a`.`col_season`, `a`.`col_part`, `a`.`url_image`, '" + rows[0].id_user + "' AS `only_user`, '" + id_add + "' AS `id_origin_anime`  " +
+                            "FROM `" + db_config.database + "`.`anime` `a` " +
+                            "WHERE `a`.`id` = '" + id_add + "'"
+                                    );
                     res.status(200).send(rows);
                     connection.end();
                 })
