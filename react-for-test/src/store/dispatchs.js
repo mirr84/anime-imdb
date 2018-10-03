@@ -3,7 +3,7 @@ import {
 
     actionChangeIsAuth, actionChangeLoginInput, actionChangePasswordInput, actionChangeSetToken, actionChangeEmailInput,
 
-    actionChangeSetAllList, actionChangeFilterName
+    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList
 
 } from "./actions/actions";
 
@@ -25,7 +25,7 @@ export const dispatchs = (dispatch) =>
 
                     changeSetAllList: (v) => dispatch(actionChangeSetAllList(v)),
                     changeFilterName: (v) => dispatch(actionChangeFilterName(v)),
-
+                    changeIsProgressAllList: (v) => dispatch(actionChangeIsProgressAllList(v)),
                 }
         }
     )

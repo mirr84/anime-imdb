@@ -20,21 +20,27 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
         let token = req.headers.sessionid;
         let name = req.body.name;
+        let only_user = req.body.only_user || false;
 
         let connection;
         mysql.createConnection(db_config)
             .then((conn)=>{
                 connection = conn;
-                return connection.query(
-                    "SELECT `id`, " +
-                            "`name`, " +
-                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genre`, " +
-                            "(SELECT COUNT(*) FROM `" + db_config.database + "`.`anime` `b` WHERE `a`.`id` = `b`.`id_origin_anime` AND `b`.`only_user` = (SELECT `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "' LIMIT 1)) AS `isNoAdd`, " +
-                            " `col_season`, `col_part`, " +
-                            "`url_image` " +
-                    "FROM `" + db_config.database + "`.`anime` `a` " +
-                    "WHERE `a`.`only_user` = 0 AND `a`.`name` LIKE '%" + name + "%'"
-                );
+                return  connection.query("SELECT `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "' LIMIT 1")
+            })
+            .then((rows)=>{
+                let id_user = rows && Array.isArray(rows) && rows.length===1? rows[0].id_user : 0;
+
+                return  connection.query(
+                            "SELECT `id`, " +
+                                    "`name`, " +
+                                    "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genre`, " +
+                                    "(SELECT COUNT(*) FROM `" + db_config.database + "`.`anime` `b` WHERE `a`.`id` = `b`.`id_origin_anime` AND `b`.`only_user` = '" + id_user + "') AS `isNoAdd`, " +
+                                    " `col_season`, `col_part`, " +
+                                    "`url_image` " +
+                            "FROM `" + db_config.database + "`.`anime` `a` " +
+                            "WHERE `a`.`only_user` = '" + (only_user?id_user:0) + "' AND `a`.`name` LIKE '%" + name + "%' " + (only_user?"and `a`.`id_origin_anime` != 0":"")
+                        )
             })
             .then((rows)=>{
                 res.status(200).send(rows);
@@ -91,8 +97,6 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 });
 
         }
-
-        res.send('');
 
     });
 

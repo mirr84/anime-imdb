@@ -8,8 +8,8 @@ import {
 import {getLocalStorage} from "../utils/getLocalStorage";
 
 const initState = {
-    login: 'tester_nsk',
-    password: '123',
+    login: '',
+    password: '',
     isAuth: false,
     email: 'mail@mail.ru',
     token: ''

@@ -3,7 +3,7 @@ import {
 
     ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT, ACTION_CHANGE_EMAIL_INPUT,
 
-    ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME
+    ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME, ACTION_CHANGE_IS_PROGRESS_ALL_LIST
 
 } from "./actionConst";
 
@@ -73,6 +73,13 @@ export const actionChangeSetAllList = (payload) => (
 export const actionChangeFilterName = (payload) => (
     {
         type: ACTION_CHANGE_FILTER_NAME,
+        payload
+    }
+)
+
+export const actionChangeIsProgressAllList = (payload) => (
+    {
+        type: ACTION_CHANGE_IS_PROGRESS_ALL_LIST,
         payload
     }
 )

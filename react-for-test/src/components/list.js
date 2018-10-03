@@ -4,11 +4,12 @@ import {connector} from "../store/utils/connector";
 import {Input, Table} from 'reactstrap';
 import lifecycle from "react-pure-lifecycle";
 import {getAllListAnime, addMyListAnime} from "../services/serviceAnime";
-import {FaPlus} from 'react-icons/fa';
+import {FaPlus, FaCheck} from 'react-icons/fa';
+import LoadingOverlay from 'react-loading-overlay';
 
 const methods = {
     componentDidMount(props) {
-        getAllListAnime(props);
+        getAllListAnime(props, false);
     }
 }
 
@@ -17,7 +18,13 @@ const List = ({state, dispatch}) => {
     return (
         <div>
 
-            <Table size="sm" striped hover>
+            <LoadingOverlay
+                active={state.animeReducer.isProgressAllList}
+                spinner
+                text='Получаем данные'
+            >
+
+                <Table size="sm" striped hover>
                 <thead>
                 <tr>
                     <th>#</th>
@@ -49,15 +56,20 @@ const List = ({state, dispatch}) => {
                         .map(
                             (item, idx) =>
                                 <tr key={idx}>
-                                    <th scope="row">{item.id}</th>
+                                    <th scope="row">{idx + 1}</th>
 
                                     {
-                                        item.isNoAdd === 0 ? <td style={{cursor: 'pointer'}} onClick={() => {
-                                                addMyListAnime({state, dispatch}, item.id);
-                                            }}>
-                                                <FaPlus/>
+                                        state.loginReducer.isAuth ? (
+                                            item.isNoAdd === 0 ?
+                                            <td style={{cursor: 'pointer'}} onClick={ () => { addMyListAnime({state, dispatch}, item.id); }}>
+                                                <FaPlus />
                                             </td> :
-                                            <td></td>
+                                            <td>
+                                                <FaCheck />
+                                            </td>
+                                        ) : (
+                                            ''
+                                        )
                                     }
 
                                     <td>{item.name}</td>
@@ -69,6 +81,9 @@ const List = ({state, dispatch}) => {
                 }
                 </tbody>
             </Table>
+
+            </LoadingOverlay>
+
         </div>
     )
 
