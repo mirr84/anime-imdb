@@ -1,5 +1,6 @@
 "use strict";
 
+const url = require('url');
 const genMsg = require('./utils').genMsg;
 
 module.exports.initAuthApi = (app, mysql, db_config) => {
@@ -50,7 +51,12 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
     app.get('/anime/add', (req, res) => {
 
         let token = req.headers.sessionid;
-        console.log( req.body )
+        if (!token) {
+            res.status(401).send({msg: genMsg('ошибка токена')});
+        } else {
+            let url_parts = url.parse(req.url, true);
+            let id_add = url_parts.query.id;
+        }
 
         res.send('');
 
