@@ -26,7 +26,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 return connection.query(
                     "SELECT `id`, " +
                             "`name`, " +
-                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genge`, " +
+                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genre`, " +
                             "(SELECT COUNT(*) FROM `" + db_config.database + "`.`anime` `b` WHERE `a`.`id` = `b`.`id_origin_anime` AND `b`.`only_user` = (SELECT `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "' LIMIT 1)) AS `isNoAdd`, " +
                             " `col_season`, `col_part`, " +
                             "`url_image` " +
