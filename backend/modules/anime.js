@@ -16,6 +16,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // resp: status 2** { anime: [<anime>, ...] } или 401
     app.post('/anime/list', (req, res) => {
 
+        let token = req.headers.sessionid;
         let name = req.body.name;
 
         let connection;
@@ -25,9 +26,9 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 return connection.query(
                     "SELECT `id`, " +
                             "`name`, " +
-                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) as `genre`, " +
-                            "(SELECT COUNT(*) FROM `anime_user` `c` WHERE `c`.`id_anime` = `a`.id) as `isNoAdd`, " +
-                            "`col_season`, `col_part`, " +
+                            "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genge`, " +
+                            "(SELECT COUNT(*) FROM `" + db_config.database + "`.`anime` `b` WHERE `a`.`id` = `b`.`id_origin_anime` AND `b`.`only_user` = (SELECT `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "' LIMIT 1)) AS `isNoAdd`, " +
+                            " `col_season`, `col_part`, " +
                             "`url_image` " +
                     "FROM `" + db_config.database + "`.`anime` `a` " +
                     "WHERE `a`.`only_user` = 0 AND `a`.`name` LIKE '%" + name + "%'"

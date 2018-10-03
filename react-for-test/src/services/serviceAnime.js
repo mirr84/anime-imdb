@@ -3,8 +3,12 @@ import axios from "axios";
 import {siteUrl} from "../common/config";
 
 export const getAllListAnime = (props) =>
-    axios.post(siteUrl + '/anime/list', {
+    axios.post(siteUrl + '/anime/list',
+        {
             name: props.state.animeReducer.filter.name
+        },
+        {
+            headers: {'sessionId': props.state.loginReducer.token}
         }
     )
         .then(
