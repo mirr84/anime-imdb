@@ -25,7 +25,7 @@ export const addMyListAnime = (props, id) => {
         }
     )
         .then(
-            (resp) => { console.log( resp.data ) },
+            (resp) => { getAllListAnime(props) },
             (err) => { console.log( err ) }
         )
 
