@@ -51,11 +51,42 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
     app.get('/anime/add', (req, res) => {
 
         let token = req.headers.sessionid;
+        let url_parts = url.parse(req.url, true);
+        let id_add = url_parts.query.id;
+
         if (!token) {
             res.status(401).send({msg: genMsg('ошибка токена')});
+        } else if (!id_add) {
+            res.status(500).send({msg: genMsg('ошибка выбора')});
         } else {
-            let url_parts = url.parse(req.url, true);
-            let id_add = url_parts.query.id;
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then((conn)=>{
+                    connection = conn;
+                    return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
+                })
+                .then((rows)=>{
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1) {
+                        // ничего не делаем
+                        return rows;
+                    } else {
+                        throw 'ты кто такой?';
+                    }
+                })
+                .then((rows)=>{
+                    connection.query("INSERT INTO `" + db_config.database + "`.`anime` (`id_genre`,`name`,`col_season`,`col_part`,`url_image`,`only_user`,`id_origin_anime`) "
+                                        "SELECT `a`.`id_genre`, `a`.`name`, `a`.`col_season`, `a`.`col_part`, `a`.`url_image`, '" + rows[0].id_user + "' AS `only_user`, '" + id_add + "' AS `id_origin_anime`  " +
+                                        "FROM `" + db_config.database + "`.`anime` `a` " +
+                                        "WHERE `a`.`id` = '" + id_add + "'";
+                    res.status(200).send(rows);
+                    connection.end();
+                })
+                .catch((error)=>{
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({msg: genMsg(error)});
+                });
+
         }
 
         res.send('');
