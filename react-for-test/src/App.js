@@ -12,6 +12,8 @@ import Top100 from './components/top100';
 import MyList from './components/myList';
 import List from './components/list';
 
+import ModalAnime from './components/modalAnime';
+
 import {ToastContainer, toast} from "react-toastify";
 import {Container} from 'reactstrap';
 import {checkLogin} from "./services/serviceAuth";
@@ -33,10 +35,13 @@ const methods = {
 
 const App = ({state, dispatch}) => {
 
+
     return (
         <div>
 
             <ToastContainer autoClose={8000} position={toast.POSITION.TOP_RIGHT}/>
+
+            <ModalAnime />
 
             <Menu/>
 

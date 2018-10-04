@@ -3,7 +3,9 @@ import {
 
     ACTION_IS_AUTH, ACTION_CHANGE_LOGIN_INPUT, ACTION_CHANGE_PASSWORD_INPUT, ACTION_CHANGE_EMAIL_INPUT,
 
-    ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME, ACTION_CHANGE_IS_PROGRESS_ALL_LIST
+    ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME, ACTION_CHANGE_IS_PROGRESS_ALL_LIST,
+
+    ACTION_CHANGE_OPEN_MODAL_ANIME
 
 } from "./actionConst";
 
@@ -81,5 +83,13 @@ export const actionChangeIsProgressAllList = (payload) => (
     {
         type: ACTION_CHANGE_IS_PROGRESS_ALL_LIST,
         payload
+    }
+)
+
+export const actionChangeOpenModalAnime = (payload ,id) => (
+    {
+        type: ACTION_CHANGE_OPEN_MODAL_ANIME,
+        payload,
+        id
     }
 )

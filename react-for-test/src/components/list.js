@@ -61,7 +61,12 @@ const List = ({state, dispatch}) => {
                     state.animeReducer.allList
                         .map(
                             (item, idx) =>
-                                <tr key={idx}>
+                                <tr key={idx}
+                                    onClick={
+                                        () => {
+                                            item.isNoAdd !== 0 ? dispatch.changeOpenModalAnime(true, item.id) : ''
+                                        }
+                                    } >
                                     <th scope="row">{idx + 1}</th>
 
                                     {

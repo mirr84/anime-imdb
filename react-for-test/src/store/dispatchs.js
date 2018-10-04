@@ -3,7 +3,7 @@ import {
 
     actionChangeIsAuth, actionChangeLoginInput, actionChangePasswordInput, actionChangeSetToken, actionChangeEmailInput,
 
-    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList
+    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList, actionChangeOpenModalAnime
 
 } from "./actions/actions";
 
@@ -26,6 +26,8 @@ export const dispatchs = (dispatch) =>
                     changeSetAllList: (v) => dispatch(actionChangeSetAllList(v)),
                     changeFilterName: (v) => dispatch(actionChangeFilterName(v)),
                     changeIsProgressAllList: (v) => dispatch(actionChangeIsProgressAllList(v)),
+
+                    changeOpenModalAnime: (v, id) => dispatch(actionChangeOpenModalAnime(v, id)),
                 }
         }
     )
