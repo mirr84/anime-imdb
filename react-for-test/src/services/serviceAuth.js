@@ -4,10 +4,10 @@ import md5 from 'md5';
 import {messages} from "../resources/js/utils";
 import {siteUrl} from "../common/config";
 
-export const checkLogin = (props) =>
+export const checkLogin = (props, once_exit=false) =>
     axios.get(siteUrl + '/auth/check',
         {
-            headers: {'sessionId': props.state.loginReducer.token}
+            headers: {'sessionId': once_exit?'' : props.state.loginReducer.token}
         }
     )
         .then(

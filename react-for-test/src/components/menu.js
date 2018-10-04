@@ -92,7 +92,11 @@ const Menu = ({state, dispatch}) =>
                         state.loginReducer.isAuth ?
                             <NavItem>
                                 <NavLink href="#" onClick={() => {
-                                    alert('пока выход не работает, бугага =)');
+                                    // alert('пока выход не работает, бугага =)');
+                                    checkLogin({state, dispatch}, true)
+                                        .then(
+                                            (result) => dispatch.changeMenuItem()
+                                        )
                                 }}>Выход</NavLink>
                             </NavItem> : ''
                     }

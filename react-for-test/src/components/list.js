@@ -28,7 +28,13 @@ const List = ({state, dispatch}) => {
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th></th>
+                    {
+                        state.loginReducer.isAuth ? (
+                            <th></th>
+                        ) : (
+                            ''
+                        )
+                    }
                     <th>
                         Название <br/>
                         <Input bsSize="sm" type="text" name="name" id="name" placeholder="Название"
