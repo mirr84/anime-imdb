@@ -20,7 +20,7 @@ import axios from "axios";
 
 // const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 const store = createStore(reducer);
-      store.subscribe(() => localStorage.setItem('store', JSON.stringify(store.getState())));
+store.subscribe(() => localStorage.setItem('store', JSON.stringify(store.getState())));
 
 axios.interceptors.request.use(
     (config) => {

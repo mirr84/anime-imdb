@@ -19,6 +19,8 @@ const MyList = ({state, dispatch}) => {
 
         <LoadingOverlay
             active={state.animeReducer.isProgressAllList}
+            background={'#f0f8ffbd'}
+            color={'black'}
             spinner
             text='Получаем данные'
         >
@@ -54,17 +56,13 @@ const MyList = ({state, dispatch}) => {
                     state.animeReducer.allList
                         .map(
                             (item, idx) =>
-                                <tr key={idx} onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, idSelectAnime: item.id }) } >
+                                <tr key={idx} style={ {cursor: 'pointer'} } onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, idSelectAnime: item.id }) } >
                                     <th scope="row">{idx + 1}</th>
                                     <td>{item.name}</td>
                                     <td>{item.genre}</td>
                                     <td>{item.col_season}/{item.col_part}</td>
                                     <td>{item.url_image}</td>
-
-                                    <td>
-
-                                    </td>
-
+                                    <td></td>
                                 </tr>
                         )
                 }

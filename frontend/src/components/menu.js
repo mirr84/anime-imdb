@@ -19,6 +19,9 @@ export const goToSection = (props, section) => {
         props.dispatch.setter('menuReducer', { item: ''  })
     } else {
         checkLogin(props)
+            .then (
+                (menu) => props.dispatch.setter('menuReducer', {menu})
+            )
             .then(
                 (result) => {
                     if (props.state.menuReducer.menu[section]) {

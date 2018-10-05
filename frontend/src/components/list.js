@@ -20,6 +20,8 @@ const List = ({state, dispatch}) => {
 
             <LoadingOverlay
                 active={state.animeReducer.isProgressAllList}
+                background={'#f0f8ffbd'}
+                color={'black'}
                 spinner
                 text='Получаем данные'
             >
