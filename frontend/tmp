@@ -1,0 +1,75 @@
+axios({
+		    url: siteUrl + '/auth/login',
+		    method: 'post',
+		    data: {
+		    	login: this.state.login,
+		    	password: this.state.password // md5(this.state.password)
+		    }
+		 })
+		 .then(
+        (response) => { 
+          // this.setState({menu: response.data});
+          localStorage.token = response.data;
+          
+        }
+      ) 
+     .catch(
+        (error) => { 
+          this.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
+          localStorage.token = '';
+
+                this.refs.notify.notificationAlert(
+                {
+                    place: 'br',
+                    message: (
+                        <div>
+                            <span>
+                                Ошибка логина или пароля
+                            </span>
+                        </div>
+                    ),
+                    type: "info",
+                    icon: "",
+                    autoDismiss: 5
+                }
+              );
+          }        
+      )
+
+
+
+
+   let headers = localStorage.token ? { 'sessionId': localStorage.token } : '';
+   axios({
+        url: siteUrl + '/auth/check',
+        method: 'get',
+        headers
+     })
+     .then(
+        (response) => { 
+          kostil.setState({menu: response.data});
+        }
+      ) 
+     .catch(
+        (error) => { 
+          kostil.setState({menu: error && error.response && error.response.data ? error.response.data : {}});
+          if (headers) {
+                kostil.refs.notify.notificationAlert(
+                {
+                    place: 'br',
+                    message: (
+                        <div>
+                            <span>
+                                Ошибка токена
+                            </span>
+                        </div>
+                    ),
+                    type: "info",
+                    icon: "",
+                    autoDismiss: 5
+                }
+              );
+            localStorage.token = '';
+          }
+        }
+      )
