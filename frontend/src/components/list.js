@@ -30,13 +30,7 @@ const List = ({state, dispatch}) => {
                 <thead>
                 <tr>
                     <th>#</th>
-                    {
-                        state.loginReducer.isAuth ? (
-                            <th></th>
-                        ) : (
-                            ''
-                        )
-                    }
+                    <th></th>
                     <th>
                         Название <br/>
                         <Input bsSize="sm" type="text" name="name" id="name" placeholder="Название"
@@ -76,7 +70,7 @@ const List = ({state, dispatch}) => {
                                                 <FaCheck />
                                             </td>
                                         ) : (
-                                            ''
+                                            <td></td>
                                         )
                                     }
 
