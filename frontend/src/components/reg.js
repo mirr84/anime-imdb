@@ -17,9 +17,7 @@ const Reg = ({state, dispatch}) => {
                     <Input bsSize="sm" type="text" name="login" id="login" placeholder="Логин"
                            value={state.loginReducer.login}
                            onChange={
-                               (e) => {
-                                   dispatch.changeLoginInput(e.target.value)
-                               }
+                               (e) => dispatch.setter('loginReducer', { login: e.target.value } )
                            }
                     />
                 </Col>
@@ -30,9 +28,9 @@ const Reg = ({state, dispatch}) => {
                 <Col sm={10}>
                     <Input bsSize="sm" type="password" name="password" id="password" placeholder="Пароль"
                            value={state.loginReducer.password}
-                           onChange={(e) => {
-                               dispatch.changePasswordInput(e.target.value)
-                           }}
+                           onChange={(e) =>
+                               dispatch.setter('loginReducer', { password: e.target.value } )
+                           }
                     />
                 </Col>
             </FormGroup>
@@ -42,9 +40,9 @@ const Reg = ({state, dispatch}) => {
                 <Col sm={10}>
                     <Input bsSize="sm" type="email" name="email" id="email" placeholder="email"
                            value={state.loginReducer.email}
-                           onChange={(e) => {
-                               dispatch.changeEmailInput(e.target.value)
-                           }}
+                           onChange={(e) =>
+                               dispatch.setter('loginReducer', { email: e.target.value } )
+                           }
                     />
                 </Col>
             </FormGroup>

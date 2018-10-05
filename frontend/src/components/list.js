@@ -41,7 +41,7 @@ const List = ({state, dispatch}) => {
                                value={state.animeReducer.filter.name}
                                onChange={
                                    (e) => {
-                                       dispatch.changeFilterName(e.target.value);
+                                       dispatch.setter('animeReducer', { filter: {name: e.target.value} });
                                        getAllListAnime({state, dispatch});
                                    }
                                }
@@ -61,12 +61,7 @@ const List = ({state, dispatch}) => {
                     state.animeReducer.allList
                         .map(
                             (item, idx) =>
-                                <tr key={idx}
-                                    onClick={
-                                        () => {
-                                            item.isNoAdd !== 0 ? dispatch.changeOpenModalAnime(true, item.id) : ''
-                                        }
-                                    } >
+                                <tr key={idx} >
                                     <th scope="row">{idx + 1}</th>
 
                                     {

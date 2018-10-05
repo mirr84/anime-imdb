@@ -17,7 +17,7 @@ const ModalAnime = ({state, dispatch}) => {
         <div>
 
             <Modal isOpen={state.animeReducer.modalAnime} toggle={ () => {} } size={'lg'}>
-                <ModalHeader toggle={() => dispatch.changeOpenModalAnime(false) }>Информация о твоей анимешке</ModalHeader>
+                <ModalHeader toggle={() => dispatch.setter('animeReducer', { modalAnime: false  }) }>Информация о твоей анимешке</ModalHeader>
                 <ModalBody>
 
                     { state.animeReducer.idSelectAnime }
@@ -25,7 +25,7 @@ const ModalAnime = ({state, dispatch}) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={() => alert('3')}>Внести изменение</Button>{' '}
-                    <Button color="secondary" onClick={() => dispatch.changeOpenModalAnime(false) }>Закрыть</Button>
+                    <Button color="secondary" onClick={() => dispatch.setter('animeReducer', { modalAnime: false  }) }>Закрыть</Button>
                 </ModalFooter>
             </Modal>
 

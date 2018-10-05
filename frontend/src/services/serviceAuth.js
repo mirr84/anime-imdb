@@ -7,19 +7,12 @@ import {siteUrl} from "../common/config";
 export const checkLogin = (props, once_exit=false) =>
     axios.get(siteUrl + '/auth/check',
         {
-            headers: {'sessionId': once_exit?'' : props.state.loginReducer.token}
+            headers: {'sessionId': once_exit? '' : props.state.loginReducer.token}
         }
     )
         .then(
-            (resp) => {
-                props.dispatch.changeIsAuth(true);
-                props.dispatch.changeMenuSetItems(resp.data);
-            },
-            (err) => {
-                props.dispatch.changeIsAuth(false);
-                props.dispatch.changeMenuSetItems(err.response.data);
-                props.dispatch.changeSetToken('');
-            }
+            (resp) => resp.data,
+            (err) => err.response.data
         )
 
 export const doLogin = (props) =>
@@ -30,17 +23,12 @@ export const doLogin = (props) =>
         })
         .then(
             resp => {
-                props.dispatch.changePasswordInput('');
-                props.dispatch.changeIsAuth(true);
-                props.dispatch.changeSetToken(resp.data.token);
-                props.dispatch.changeMenuSetItems(resp.data.menu);
-                props.dispatch.changeMenuItem('my_list');
+                props.dispatch.setter('loginReducer', { password: '',  isAuth: true, token: resp.data.token } );
+                props.dispatch.setter('menuReducer', {  menu: resp.data.menu, item: 'my_list' } );
             },
             err => {
-                props.dispatch.changePasswordInput('');
-                props.dispatch.changeIsAuth(false);
-                props.dispatch.changeSetToken('');
-                props.dispatch.changeMenuSetItems(err.response.data.menu);
+                props.dispatch.setter('loginReducer', { password: '',  isAuth: false, token: '' } );
+                props.dispatch.setter('menuReducer', {  menu: err.response.data.menu, item: '' } );
                 messages(err.response.data, true);
             }
         )

@@ -16,13 +16,13 @@ import {checkLogin} from "../services/serviceAuth";
 
 export const goToSection = (props, section) => {
     if (!section) {
-        props.dispatch.changeMenuItem('');
+        props.dispatch.setter('menuReducer', { item: ''  })
     } else {
         checkLogin(props)
             .then(
                 (result) => {
                     if (props.state.menuReducer.menu[section]) {
-                        props.dispatch.changeMenuItem(section);
+                        props.dispatch.setter('menuReducer', { item: section  })
                     } else {
                         // ничего не делаем
                     }
@@ -36,7 +36,7 @@ const Menu = ({state, dispatch}) =>
 
         <Navbar color="light" light expand="md">
             <NavbarBrand href="#" onClick={() => goToSection({state, dispatch}, '')}>Мои анимешки</NavbarBrand>
-            <NavbarToggler onClick={() => dispatch.changeMenuCollapse(!state.menuReducer.collapse)}/>
+            <NavbarToggler onClick={() => dispatch.setter('menuReducer', { collapse: !state.menuReducer.collapse })}/>
             <Collapse isOpen={state.menuReducer.collapse} navbar>
                 <Nav className="ml-auto" navbar>
 
@@ -92,11 +92,7 @@ const Menu = ({state, dispatch}) =>
                         state.loginReducer.isAuth ?
                             <NavItem>
                                 <NavLink href="#" onClick={() => {
-                                    // alert('пока выход не работает, бугага =)');
-                                    checkLogin({state, dispatch}, true)
-                                        .then(
-                                            (result) => dispatch.changeMenuItem()
-                                        )
+                                    alert('пока выход не работает, бугага =)');
                                 }}>Выход</NavLink>
                             </NavItem> : ''
                     }

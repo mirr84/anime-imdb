@@ -4,7 +4,7 @@ import {siteUrl} from "../common/config";
 
 export const getAllListAnime = (props, only_user = false) => {
 
-    props.dispatch.changeIsProgressAllList(true);
+    props.dispatch.setter('animeReducer', { isProgressAllList: true } );
 
     return axios.post(siteUrl + '/anime/list',
         {
@@ -16,11 +16,11 @@ export const getAllListAnime = (props, only_user = false) => {
         }
     )
         .then(
-            (resp) => props.dispatch.changeSetAllList(resp.data),
-            (err) => props.dispatch.changeSetAllList([])
+            (resp) => props.dispatch.setter('animeReducer', { allList: resp.data } ),
+            (err) => props.dispatch.setter('animeReducer', { allList: [] } )
         )
         .then (
-            (result) => props.dispatch.changeIsProgressAllList(false)
+            (result) => props.dispatch.setter('animeReducer', { isProgressAllList: false } )
         )
 }
 
