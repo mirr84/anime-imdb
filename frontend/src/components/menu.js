@@ -38,8 +38,12 @@ const Menu = ({state, dispatch}) =>
     (
 
         <Navbar color="light" light expand="md">
-            <NavbarBrand href="#" onClick={() => goToSection({state, dispatch}, '')}>Мои анимешки</NavbarBrand>
+            <NavbarBrand href="#" onClick={() => goToSection({state, dispatch}, '')}>
+                Мои анимешки
+            </NavbarBrand>
+
             <NavbarToggler onClick={() => dispatch.setter('menuReducer', { collapse: !state.menuReducer.collapse })}/>
+
             <Collapse isOpen={state.menuReducer.collapse} navbar>
                 <Nav className="ml-auto" navbar>
 
@@ -96,7 +100,9 @@ const Menu = ({state, dispatch}) =>
                             <NavItem>
                                 <NavLink href="#" onClick={() => {
                                     alert('пока выход не работает, бугага =)');
-                                }}>Выход</NavLink>
+                                }}>
+                                    Выход
+                                </NavLink>
                             </NavItem> : ''
                     }
 

@@ -6,7 +6,8 @@ const initState = {
     isProgressAllList: false,
     filter: { name: '' },
     modalAnime: false,
-    idSelectAnime: null
+    idSelectAnime: null,
+    typeList: 'table'
 }
 
 export const animeReducer = (state = getLocalStorage('animeReducer', initState), action) => {
