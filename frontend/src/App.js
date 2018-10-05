@@ -22,13 +22,7 @@ const methods = {
     componentDidMount(props) {
         checkLogin(props)
             .then (
-                (result) => {
-                    if (props.state.menuReducer.menu[props.state.menuReducer.item]) {
-                        // ничего не делаем
-                    } else {
-                        props.dispatch.changeMenuItem('');
-                    }
-                }
+                (menu) => props.dispatch.setter('menuReducer', {menu})
             )
     }
 }

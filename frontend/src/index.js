@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import  thunkMiddleware from 'redux-thunk'
+// import  thunkMiddleware from 'redux-thunk'
 
 import reducer from './store/reducers/index';
 
@@ -18,11 +18,12 @@ import App from "./App";
 
 import axios from "axios";
 
-const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+// const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+const store = createStore(reducer);
       store.subscribe(() => localStorage.setItem('store', JSON.stringify(store.getState())));
 
 axios.interceptors.request.use(
-    (config) => {        ;
+    (config) => {
         return Promise.resolve(config);
     },
     (error) => {

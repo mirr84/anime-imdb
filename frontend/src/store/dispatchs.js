@@ -3,7 +3,10 @@ import {
 
     actionChangeIsAuth, actionChangeLoginInput, actionChangePasswordInput, actionChangeSetToken, actionChangeEmailInput,
 
-    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList, actionChangeOpenModalAnime
+    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList, actionChangeOpenModalAnime,
+
+
+    actionSetter
 
 } from "./actions/actions";
 
@@ -12,6 +15,9 @@ export const dispatchs = (dispatch) =>
         {
             dispatch:
                 {
+
+                    setter: (reducer, v) => dispatch(actionSetter(reducer, v)),
+
 
                     changeMenuCollapse: (v) => dispatch(actionChangeMenuCollapse(v)),
                     changeMenuItem: (v) => dispatch(actionChangeMenuItem(v)),

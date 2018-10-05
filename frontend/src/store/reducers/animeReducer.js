@@ -2,6 +2,7 @@ import {
     ACTION_CHANGE_SET_ALL_LIST, ACTION_CHANGE_FILTER_NAME, ACTION_CHANGE_IS_PROGRESS_ALL_LIST,
     ACTION_CHANGE_OPEN_MODAL_ANIME
 } from "../actions/actionConst";
+
 import {getLocalStorage} from "../utils/getLocalStorage";
 
 const initState = {

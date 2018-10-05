@@ -3,7 +3,8 @@ import {
     ACTION_CHANGE_LOGIN_INPUT,
     ACTION_CHANGE_PASSWORD_INPUT,
     ACTION_CHANGE_EMAIL_INPUT,
-    ACTION_SET_TOKEN} from "../actions/actionConst";
+    ACTION_SET_TOKEN, ACTION_SETTER
+} from "../actions/actionConst";
 
 import {getLocalStorage} from "../utils/getLocalStorage";
 
@@ -19,13 +20,13 @@ export const loginReducer = (state = getLocalStorage('loginReducer', initState),
 
     let newState = Object.assign({}, state);
 
-    if (action.type === ACTION_CHANGE_LOGIN_INPUT) {
-        newState.login = action.payload;
+    if (action.reducer === 'loginReducer') {
+        if (action.type === ACTION_SETTER) {
+            newState = Object.assign(state, action.payload);
+        }
     }
 
-    if (action.type === ACTION_CHANGE_PASSWORD_INPUT) {
-        newState.password = action.payload;
-    }
+    // --------
 
     if (action.type === ACTION_IS_AUTH) {
         if (action.payload) {
