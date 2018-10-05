@@ -1,14 +1,4 @@
-import {
-    actionChangeMenuCollapse, actionChangeMenuItem, actionChangeMenuSetItems,
-
-    actionChangeIsAuth, actionChangeLoginInput, actionChangePasswordInput, actionChangeSetToken, actionChangeEmailInput,
-
-    actionChangeSetAllList, actionChangeFilterName, actionChangeIsProgressAllList, actionChangeOpenModalAnime,
-
-
-    actionSetter
-
-} from "./actions/actions";
+import {actionSetter} from "./actions/actions";
 
 export const dispatchs = (dispatch) =>
     (

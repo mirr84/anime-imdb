@@ -2,7 +2,7 @@ import React from 'react';
 import {connector} from "../store/utils/connector";
 import {getAllListAnime} from "../services/serviceAnime";
 
-import {Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Table} from 'reactstrap';
+import {Input, Table} from 'reactstrap';
 import lifecycle from "react-pure-lifecycle";
 import LoadingOverlay from 'react-loading-overlay';
 

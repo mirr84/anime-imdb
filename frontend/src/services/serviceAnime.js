@@ -22,24 +22,18 @@ export const getAllListAnime = (props, only_user = false) => {
         .then (
             (result) => props.dispatch.setter('animeReducer', { isProgressAllList: false } )
         )
+
 }
 
 // get: /anime/add?id=<id_anime> => Headers { token: <token> }
-export const addMyListAnime = (props, id) => {
-
-
-
+export const addMyListAnime = (props, id) =>
     axios.get(siteUrl + '/anime/add', {
             headers: {'sessionId': props.state.loginReducer.token},
             params: { id }
         }
     )
         .then(
-            (resp) => {
-                getAllListAnime(props)
-            },
+            (resp) => getAllListAnime(props),
             (err) => {
             }
         )
-
-}
