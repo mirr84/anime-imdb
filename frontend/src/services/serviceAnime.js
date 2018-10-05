@@ -37,3 +37,28 @@ export const addMyListAnime = (props, id) =>
             (err) => {
             }
         )
+
+// get: /anime/add?id=<id_anime> => Headers { token: <token> }
+export const remoteMyListAnime = (props, id) =>
+    axios.get(siteUrl + '/anime/remote', {
+            headers: {'sessionId': props.state.loginReducer.token},
+            params: { id }
+        }
+    )
+        .then(
+            (resp) => getAllListAnime(props, true),
+            (err) => {
+            }
+        )
+
+// get: /anime/info?id=<id_anime> => Headers { token: <token> }
+export const infoMyListAnime = (props, id) =>
+    axios.get(siteUrl + '/anime/info', {
+            headers: {'sessionId': props.state.loginReducer.token},
+            params: { id }
+        }
+    )
+        .then(
+            (resp) => resp.data,
+            (err) => err.response.data
+        )

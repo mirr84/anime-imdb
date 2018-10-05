@@ -5,9 +5,7 @@ export const dispatchs = (dispatch) =>
         {
             dispatch:
                 {
-
                     setter: (reducer, v) => dispatch(actionSetter(reducer, v)),
-
                 }
         }
     )

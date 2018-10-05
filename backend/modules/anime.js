@@ -103,7 +103,87 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // get: /anime/remote?id=<id_anime> => Headers { token: <token> }
 // resp: status 2** или 401 или 5** { msg: [{type: ‘warn’: text: ‘что то пошло не так’}] }
     app.get('/anime/remote', (req, res) => {
-        res.send('123');
+        let token = req.headers.sessionid;
+        let url_parts = url.parse(req.url, true);
+        let id_remote = url_parts.query.id;
+
+        if (!token) {
+            res.status(401).send({msg: genMsg('ошибка токена')});
+        } else if (!id_remote) {
+            res.status(500).send({msg: genMsg('ошибка выбора')});
+        } else {
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then((conn)=>{
+                    connection = conn;
+                    return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
+                })
+                .then((rows)=>{
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1) {
+                        // ничего не делаем
+                        return rows;
+                    } else {
+                        throw 'ты кто такой?';
+                    }
+                })
+                .then((rows)=>{
+                    return connection.query("DELETE FROM `" + db_config.database + "`.`anime` WHERE `id` = '" + id_remote + "' AND `only_user` = '" + rows[0].id_user + "'");
+                })
+                .then((rows)=>{
+                    res.status(200).send(rows);
+                    connection.end();
+                })
+                .catch((error)=>{
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({msg: genMsg(error)});
+                });
+
+        }
+
+    });
+
+// get: /anime/info?id=<id_anime> => Headers { token: <token> }
+// resp: status 2** или 401 или 5** { msg: [{type: ‘warn’: text: ‘что то пошло не так’}] }
+    app.get('/anime/info', (req, res) => {
+        let token = req.headers.sessionid;
+        let url_parts = url.parse(req.url, true);
+        let id_info = url_parts.query.id;
+
+        if (!token) {
+            res.status(401).send({msg: genMsg('ошибка токена')});
+        } else if (!id_info) {
+            res.status(500).send({msg: genMsg('ошибка выбора')});
+        } else {
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then((conn)=>{
+                    connection = conn;
+                    return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
+                })
+                .then((rows)=>{
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1) {
+                        // ничего не делаем
+                        return rows;
+                    } else {
+                        throw 'ты кто такой?';
+                    }
+                })
+                .then((rows)=>{
+                    return connection.query("SELECT * FROM `" + db_config.database + "`.`anime` `a` WHERE `a`.`id` = '" + id_info + "' AND `a`.`only_user` = '" + rows[0].id_user + "'");
+                })
+                .then((rows)=>{
+                    res.status(200).send(rows);
+                    connection.end();
+                })
+                .catch((error)=>{
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({msg: genMsg(error)});
+                });
+
+        }
+
     });
 
 // post:  /anime/edit => Headers { token: <token> } { <anime> }

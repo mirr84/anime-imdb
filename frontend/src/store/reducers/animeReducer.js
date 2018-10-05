@@ -3,11 +3,16 @@ import {getLocalStorage} from "../utils/getLocalStorage";
 
 const initState = {
     allList: [],
+
     isProgressAllList: false,
+    isProgressInfo: false,
+
     filter: { name: '' },
     modalAnime: false,
     idSelectAnime: null,
-    typeList: 'table'
+    typeList: 'table',
+    animeInfo: null
+
 }
 
 export const animeReducer = (state = getLocalStorage('animeReducer', initState), action) => {
