@@ -11,7 +11,7 @@ const initState = {
     modalAnime: false,
     idSelectAnime: null,
     typeList: 'table',
-    animeInfo: null
+    animeInfo: []
 
 }
 

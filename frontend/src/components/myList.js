@@ -2,7 +2,7 @@ import React from 'react';
 import {connector} from "../store/utils/connector";
 import {getAllListAnime} from "../services/serviceAnime";
 
-import {Input, Table} from 'reactstrap';
+import {Input, Table, Row, Col} from 'reactstrap';
 import lifecycle from "react-pure-lifecycle";
 import LoadingOverlay from 'react-loading-overlay';
 
@@ -17,6 +17,26 @@ const MyList = ({state, dispatch}) => {
   return (
     <div>
 
+        <Row>
+            <Col sm="4">
+                <Input bsSize="sm" type="text" name="name" id="name" placeholder="Название"
+                       value={state.animeReducer.filter.name}
+                       onChange={
+                           (e) => {
+                               dispatch.setter('animeReducer', {filter: {name: e.target.value}});
+                               getAllListAnime({state, dispatch});
+                           }
+                       }
+                       onBlur={
+                           () => {
+                           }
+                       }
+                />
+            </Col>
+        </Row>
+
+        <hr/>
+
         <LoadingOverlay
             active={state.animeReducer.isProgressAllList}
             background={'#f0f8ffbd'}
@@ -24,26 +44,12 @@ const MyList = ({state, dispatch}) => {
             spinner
             text='Получаем данные'
         >
-
             <Table size="sm" striped hover>
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>
-                        Название <br/>
-                        <Input bsSize="sm" type="text" name="name" id="name" placeholder="Название"
-                               value={state.animeReducer.filter.name}
-                               onChange={
-                                   (e) => {
-                                       dispatch.setter('animeReducer', { filter: { name: e.target.value } });
-                                       getAllListAnime({state, dispatch}, true);
-                                   }
-                               }
-                               onBlur={
-                                   () => {
-                                   }
-                               }
-                        />
+                        Название
                     </th>
                     <th>Жанр</th>
                     <th>Сезоны/Серии</th>
@@ -56,7 +62,8 @@ const MyList = ({state, dispatch}) => {
                     state.animeReducer.allList
                         .map(
                             (item, idx) =>
-                                <tr key={idx} style={ {cursor: 'pointer'} } onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, idSelectAnime: item.id }) } >
+                                <tr key={idx} style={ {cursor: 'pointer'} }
+                                    onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, animeInfo: [], idSelectAnime: item.id }) } >
                                     <th scope="row">{idx + 1}</th>
                                     <td>{item.name}</td>
                                     <td>{item.genre}</td>
