@@ -2,15 +2,8 @@ import React from 'react';
 
 import {connector} from "../store/utils/connector";
 
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    Nav,
-    NavItem,
-    NavLink,
-    NavbarBrand
-} from 'reactstrap';
+import {FaUser, FaTable, FaUserSecret} from 'react-icons/fa';
+import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 
 import {checkLogin} from "../services/serviceAuth";
 
@@ -37,78 +30,115 @@ export const goToSection = (props, section) => {
 const Menu = ({state, dispatch}) =>
     (
 
-        <Navbar color="light" light expand="md">
-            <NavbarBrand href="#" onClick={() => goToSection({state, dispatch}, '')}>
-                Мои анимешки
-            </NavbarBrand>
+<SideNav
+    onSelect={(selected) => {
+        // Add your code here
+    }}
+>
+    <SideNav.Toggle />
+    <SideNav.Nav>
+        <NavItem eventKey="auth">
+            <NavIcon>
+                <FaUser />
+            </NavIcon>
+            <NavText>
+                Авторизция
+            </NavText>
+            {
+                state.menuReducer.menu.login ?
+                    <NavItem eventKey="auth/auth"
+                             onClick={() => goToSection({state, dispatch}, 'login')}
+                             active={state.menuReducer.item === 'login'}>
+                        <NavText>
+                            Войти
+                        </NavText>
+                    </NavItem>
+                    : ''
+            }
+            {
+                state.menuReducer.menu.reg ?
+                    <NavItem eventKey="auth/reg"
+                             onClick={() => goToSection({state, dispatch}, 'reg')}
+                             active={state.menuReducer.item === 'reg'}>
+                        <NavText>
+                            Регистрация
+                        </NavText>
+                    </NavItem> : ''
+            }
+            {
+                state.menuReducer.menu.profile ?
+                    <NavItem eventKey="auth/profile"
+                             onClick={() => goToSection({state, dispatch}, 'profile')}
+                             active={state.menuReducer.item === 'profile'}>
+                        <NavText>
+                            Мой профиль
+                        </NavText>
+                    </NavItem> : ''
+            }
+            {
+                state.loginReducer.isAuth ?
+                    <NavItem eventKey="auth/exit"
+                             onClick={() => {
+                                 alert('пока выход не работает, бугага =)');
+                             }}
+                             >
+                        <NavText>
+                           Выход
+                        </NavText>
+                    </NavItem> : ''
+            }
+        </NavItem>
+        <NavItem eventKey="lists">
+            <NavIcon>
+                <FaTable />
+            </NavIcon>
+            <NavText>
+                Таблицы
+            </NavText>
+            {
+                state.menuReducer.menu.top100 ?
+                    <NavItem eventKey="lists/top100"
+                             onClick={() => goToSection({state, dispatch}, 'top100')}
+                             active={state.menuReducer.item === 'top100'}>
+                        <NavText>
+                            Топ 100
+                        </NavText>
+                    </NavItem>
+                    : ''
+            }
+            {
+                state.menuReducer.menu.list ?
+                    <NavItem eventKey="lists/list"
+                             onClick={() => goToSection({state, dispatch}, 'list')}
+                             active={state.menuReducer.item === 'list'}>
+                        <NavText>
+                            Полный список
+                        </NavText>
+                    </NavItem> : ''
+            }
+        </NavItem>
+        <NavItem eventKey="lists">
+            <NavIcon>
+                <FaUserSecret />
+            </NavIcon>
+            <NavText>
+                Мои списки
+            </NavText>
+            {
+                state.menuReducer.menu.my_list ?
+                    <NavItem eventKey="lists/my_list"
+                             onClick={() => goToSection({state, dispatch}, 'my_list')}
+                             active={state.menuReducer.item === 'my_list'}>
+                        <NavText>
+                           Мои выбранные
+                        </NavText>
+                    </NavItem>
+                    : ''
+            }
+        </NavItem>
 
-            <NavbarToggler onClick={() => dispatch.setter('menuReducer', { collapse: !state.menuReducer.collapse })}/>
-
-            <Collapse isOpen={state.menuReducer.collapse} navbar>
-                <Nav className="ml-auto" navbar>
-
-                    {
-                        state.menuReducer.menu.login ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'login'}
-                                         onClick={() => goToSection({state, dispatch}, 'login')}>Авторизция</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.menuReducer.menu.reg ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'reg'}
-                                         onClick={() => goToSection({state, dispatch}, 'reg')}>Регистрация</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.menuReducer.menu.profile ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'profile'}
-                                         onClick={() => goToSection({state, dispatch}, 'profile')}>Мой профиль</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.menuReducer.menu.top100 ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'top100'}
-                                         onClick={() => goToSection({state, dispatch}, 'top100')}>Топ 100</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.menuReducer.menu.my_list ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'my_list'}
-                                         onClick={() => goToSection({state, dispatch}, 'my_list')}>Мой список</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.menuReducer.menu.list ?
-                            <NavItem>
-                                <NavLink href="#" active={state.menuReducer.item === 'list'}
-                                         onClick={() => goToSection({state, dispatch}, 'list')}>Полный список</NavLink>
-                            </NavItem> : ''
-                    }
-
-                    {
-                        state.loginReducer.isAuth ?
-                            <NavItem>
-                                <NavLink href="#" onClick={() => {
-                                    alert('пока выход не работает, бугага =)');
-                                }}>
-                                    Выход
-                                </NavLink>
-                            </NavItem> : ''
-                    }
-
-                </Nav>
-            </Collapse>
-        </Navbar>
+    </SideNav.Nav>
+</SideNav>
 
     )
 

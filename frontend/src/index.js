@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-viewer/dist/index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import './index.css';
 
 
