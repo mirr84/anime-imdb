@@ -65,9 +65,9 @@ const ModalAnime = ({state, dispatch}) => {
                     >
 
                         <div>
-                            {
-                                JSON.stringify(state.animeReducer.animeInfo)
-                            }
+                            {/*{*/}
+                                {/*JSON.stringify(state.animeReducer.animeInfo)*/}
+                            {/*}*/}
 
                             <FormGroup row>
 
@@ -91,6 +91,58 @@ const ModalAnime = ({state, dispatch}) => {
                                         }
                                     </Input>
                                 </Col>
+                                <Label for="description" sm={2}>Описание</Label>
+                                <Col sm={10}>
+                                    <Input type="textarea" name="description" id="description"
+                                           style={ {'margin-bottom': '7px'} }
+                                           bsSize="sm"
+                                           value={state.animeReducer.animeInfo.description}
+                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {description: e.target.value}) }) }>
+                                    </Input>
+                                </Col>
+                                <Label for="col_season" sm={2}>Кол. сезонов</Label>
+                                <Col sm={2}>
+                                    <Input type="select" name="col_season" id="col_season"
+                                           bsSize="sm" value={state.animeReducer.animeInfo.col_season}
+                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {col_season: e.target.value}) }) }>
+                                        {
+                                            Array.apply(null, {length: 20}).map(Number.call, Number)
+                                                .map(
+                                                    (item, idx) => <option key={idx} value={item+1}>{item+1}</option>
+                                                )
+                                        }
+                                    </Input>
+                                </Col>
+                                <Label for="col_part" sm={2}>Кол. серий</Label>
+                                <Col sm={2}>
+                                    <Input type="select" name="col_part" id="col_part"
+                                           bsSize="sm" value={state.animeReducer.animeInfo.col_part}
+                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {col_part: e.target.value}) }) }>
+                                        {
+                                            Array.apply(null, {length: 2000}).map(Number.call, Number)
+                                                .map(
+                                                    (item, idx) => <option key={idx} value={item+1}>{item+1}</option>
+                                                )
+                                        }
+                                    </Input>
+                                </Col>
+                                <Col sm={4} />
+
+                                {
+                                    state.animeReducer.animeInfo.url_image ?
+                                        <Col sm={2}>
+                                            <Button style={ {'padding-left': '0px'} } color="link" >Картинка</Button>
+                                        </Col>
+                                        :
+                                        <Label for="imageAnime" sm={2}>Картинка</Label>
+                                }
+                                <Col sm={10}>
+                                    <Input bsSize="sm" type="text" name="imageAnime" id="imageAnime" placeholder="ссылка на картинку"
+                                           value={state.animeReducer.animeInfo.url_image}
+                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {url_image: e.target.value}) }) }
+                                    />
+                                </Col>
+
                             </FormGroup>
 
                         </div>
