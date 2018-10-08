@@ -2,7 +2,7 @@ import React from 'react';
 import {connector} from "../store/utils/connector";
 import {getAllListAnime} from "../services/serviceAnime";
 
-import {Input, Table, Row, Col} from 'reactstrap';
+import {Input, Table, Row, Col, Button} from 'reactstrap';
 import lifecycle from "react-pure-lifecycle";
 import LoadingOverlay from 'react-loading-overlay';
 
@@ -32,6 +32,14 @@ const MyList = ({state, dispatch}) => {
                            }
                        }
                 />
+            </Col>
+            <Col sm="6" />
+            <Col sm="2">
+                <Button color="primary"
+                        onClick={() => {}}
+                        size="sm">
+                    Добавить свою
+                </Button>
             </Col>
         </Row>
 
