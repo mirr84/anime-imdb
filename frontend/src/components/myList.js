@@ -70,7 +70,7 @@ const MyList = ({state, dispatch}) => {
                         .map(
                             (item, idx) =>
                                 <tr key={idx} style={ {cursor: 'pointer'} }
-                                    onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, animeInfo: [], idSelectAnime: item.id }) } >
+                                    onClick={ (e) => dispatch.setter('animeReducer', { modalAnime: true, animeInfo: {}, idSelectAnime: item.id }) } >
                                     <th scope="row">{idx + 1}</th>
                                     <td>{item.name}</td>
                                     <td>{item.genre}</td>

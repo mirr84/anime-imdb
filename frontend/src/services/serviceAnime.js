@@ -59,6 +59,6 @@ export const infoMyListAnime = (props, id) =>
         }
     )
         .then(
-            (resp) => resp.data,
+            (resp) => resp.data[0],
             (err) => err.response.data
         )
