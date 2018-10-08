@@ -3,7 +3,7 @@ import React from 'react';
 import {connector} from "../store/utils/connector";
 
 import {FaUser, FaTable, FaUserSecret} from 'react-icons/fa';
-import SideNav, {Toggle, Nav, NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
+import SideNav, {NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
 
 import {checkLogin} from "../services/serviceAuth";
 

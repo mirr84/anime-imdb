@@ -1,12 +1,13 @@
 import React from 'react';
 import {connector} from "../store/utils/connector";
 
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col, Input, FormGroup, Label} from "reactstrap";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Col, Input, FormGroup, Label} from "reactstrap";
 import LoadingOverlay from "react-loading-overlay";
 import {autocompleteGenre, infoMyListAnime, remoteMyListAnime} from "../services/serviceAnime";
 
 import ModalConfirm from './modalConfirm';
 import lifecycle from "react-pure-lifecycle";
+
 import Viewer from 'react-viewer';
 
 const methods = {
@@ -23,6 +24,14 @@ const ModalAnime = ({state, dispatch}) => {
     return (
         <div>
 
+            <Viewer
+                zIndex={10000}
+                noNavbar={true}
+                visible={state.animeReducer.imageShow}
+                onClose={() => dispatch.setter('animeReducer', { imageShow : false }) }
+                images={[{src: state.animeReducer.animeInfo.url_image, alt: state.animeReducer.animeInfo.name}]}
+            />
+
             <ModalConfirm isOpen={state.animeReducer.modalConfirm}
                           text={'Удалить запись?'}
                           success={() => {
@@ -35,12 +44,6 @@ const ModalAnime = ({state, dispatch}) => {
                           }
                           }
                           cancel={() => dispatch.setter('animeReducer', {modalConfirm: false})}/>
-
-            <Viewer
-                visible={state.animeReducer.imageShow}
-                onClose={() => dispatch.setter('animeReducer', { imageShow : false }) }
-                images={[{src: state.animeReducer.animeInfo.url_image, alt: state.animeReducer.animeInfo.name}]}
-            />
 
             <Modal isOpen={state.animeReducer.modalAnime}
                    toggle={() => {
@@ -101,7 +104,7 @@ const ModalAnime = ({state, dispatch}) => {
                                 <Label for="description" sm={2}>Описание</Label>
                                 <Col sm={10}>
                                     <Input type="textarea" name="description" id="description"
-                                           style={ {'margin-bottom': '7px'} }
+                                           style={ {marginBottom: '7px'} }
                                            bsSize="sm"
                                            value={state.animeReducer.animeInfo.description}
                                            onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {description: e.target.value}) }) }>
@@ -140,7 +143,7 @@ const ModalAnime = ({state, dispatch}) => {
                                 {
                                     state.animeReducer.animeInfo.url_image ?
                                         <Col sm={2}>
-                                            <Button style={ {'padding-left': '0px'} }
+                                            <Button style={ {paddingLeft: '0px'} }
                                                     color="link"
                                                     onClick={ () => dispatch.setter('animeReducer', { imageShow : true }) }>
                                                 Картинка

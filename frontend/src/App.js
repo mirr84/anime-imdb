@@ -29,7 +29,6 @@ const methods = {
 
 const App = ({state, dispatch}) => {
 
-
     return (
         <div>
 
@@ -41,7 +40,7 @@ const App = ({state, dispatch}) => {
 
             <br/>
 
-            <Container style={ { 'padding-left': '75px' } }>
+            <Container style={ { paddingLeft: '75px' } }>
 
                 {state.menuReducer.item === 'main' || !state.menuReducer.item ? <Main/> : ''}
                 {state.menuReducer.item === 'login' ? <Auth/> : ''}
