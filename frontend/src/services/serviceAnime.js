@@ -4,7 +4,7 @@ import {siteUrl} from "../common/config";
 
 export const getAllListAnime = (props, only_user = false) => {
 
-    props.dispatch.setter('animeReducer', { isProgressAllList: true } );
+    props.dispatch.setter('animeReducer', {isProgressAllList: true});
 
     return axios.post(siteUrl + '/anime/list',
         {
@@ -16,11 +16,11 @@ export const getAllListAnime = (props, only_user = false) => {
         }
     )
         .then(
-            (resp) => props.dispatch.setter('animeReducer', { allList: resp.data } ),
-            (err) => props.dispatch.setter('animeReducer', { allList: [] } )
+            (resp) => props.dispatch.setter('animeReducer', {allList: resp.data}),
+            (err) => props.dispatch.setter('animeReducer', {allList: []})
         )
-        .then (
-            (result) => props.dispatch.setter('animeReducer', { isProgressAllList: false } )
+        .then(
+            (result) => props.dispatch.setter('animeReducer', {isProgressAllList: false})
         )
 
 }
@@ -29,7 +29,7 @@ export const getAllListAnime = (props, only_user = false) => {
 export const addMyListAnime = (props, id) =>
     axios.get(siteUrl + '/anime/add', {
             headers: {'sessionId': props.state.loginReducer.token},
-            params: { id }
+            params: {id}
         }
     )
         .then(
@@ -42,7 +42,7 @@ export const addMyListAnime = (props, id) =>
 export const remoteMyListAnime = (props, id) =>
     axios.get(siteUrl + '/anime/remote', {
             headers: {'sessionId': props.state.loginReducer.token},
-            params: { id }
+            params: {id}
         }
     )
         .then(
@@ -55,7 +55,7 @@ export const remoteMyListAnime = (props, id) =>
 export const infoMyListAnime = (props, id) =>
     axios.get(siteUrl + '/anime/info', {
             headers: {'sessionId': props.state.loginReducer.token},
-            params: { id }
+            params: {id}
         }
     )
         .then(
@@ -65,10 +65,24 @@ export const infoMyListAnime = (props, id) =>
 
 export const autocompleteGenre = (props, name) =>
     axios.get(siteUrl + '/autocomplete/genre', {
-            params: { name }
+            params: {name}
         }
     )
         .then(
             (resp) => resp.data,
             (err) => [] // err.response.data
+        )
+
+export const editMyListAnime = (props) =>
+    axios.post(siteUrl + '/anime/edit',
+        {
+            anime: props.state.animeReducer.animeInfo
+        },
+        {
+            headers: {'sessionId': props.state.loginReducer.token}
+        }
+    )
+        .then(
+            (resp) => resp.data,
+            (err) => err.response.data
         )

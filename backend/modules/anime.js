@@ -189,7 +189,71 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 // post:  /anime/edit => Headers { token: <token> } { <anime> }
 // resp: status 2** или 4** { msg: [{type: ‘warn’: text: ‘что то пошло не так’}] }
     app.post('/anime/edit', (req, res) => {
-        res.send('123');
+
+        let token = req.headers.sessionid;
+        let anime = req.body.anime;
+
+        if (!token) {
+            res.status(401).send({msg: genMsg('ошибка токена')});
+        } else {
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then((conn)=>{
+                    connection = conn;
+                    return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
+                })
+                .then((rows)=>{
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1 && rows[0].id_user === anime.only_user) {
+                        // ничего не делаем
+                        return rows;
+                    } else {
+                        throw 'ты кто такой?';
+                    }
+                })
+                .then((rows) => {
+                    /*
+                        {
+                            id: 131,
+                            id_genre: 5,
+                            name: 'Сериал Лог Горизонт/Log Horizon',
+                            description: '',
+                            col_season: 1,
+                            col_part: 1,
+                            last_see: 0,
+                            last_date: '0000-00-00',
+                            url_image: '',
+                            only_user: 10,
+                            id_origin_anime: 1
+                        }
+                    */
+
+                    if (anime.id) {
+                        connection.query("UPDATE `" + db_config.database + "`.`anime` " +
+                            "SET `id_genre` = '" + anime.id_genre + "', " +
+                                "`name` = '" + anime.name + "', " +
+                                "`description` = '" + anime.description + "', " +
+                                "`col_season` = '" + anime.col_season + "', " +
+                                "`col_part` = '" + anime.col_part + "', " +
+                                "`url_image` = '" + anime.url_image + "'" +
+                            "WHERE `id` = '" + anime.id + "' AND `only_user` = '" + rows[0].id_user + "'");
+                    } else {
+
+                    }
+
+                    return rows;
+                })
+                .then((rows) => {
+                    res.status(200).send(rows);
+                    connection.end();
+                })
+                .catch((error) => {
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({msg: genMsg(error)});
+                });
+
+        }
+
     });
 
 }

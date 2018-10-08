@@ -3,7 +3,13 @@ import {connector} from "../store/utils/connector";
 
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Col, Input, FormGroup, Label} from "reactstrap";
 import LoadingOverlay from "react-loading-overlay";
-import {autocompleteGenre, infoMyListAnime, remoteMyListAnime} from "../services/serviceAnime";
+
+import {
+    autocompleteGenre,
+    editMyListAnime, getAllListAnime,
+    infoMyListAnime,
+    remoteMyListAnime
+} from "../services/serviceAnime";
 
 import ModalConfirm from './modalConfirm';
 import lifecycle from "react-pure-lifecycle";
@@ -14,7 +20,7 @@ const methods = {
     componentDidMount(props) {
         autocompleteGenre(props, '')
             .then(
-                (genreList) =>  props.dispatch.setter('animeReducer', {genreList})
+                (genreList) => props.dispatch.setter('animeReducer', {genreList})
             )
     }
 }
@@ -28,7 +34,7 @@ const ModalAnime = ({state, dispatch}) => {
                 zIndex={10000}
                 noNavbar={true}
                 visible={state.animeReducer.imageShow}
-                onClose={() => dispatch.setter('animeReducer', { imageShow : false }) }
+                onClose={() => dispatch.setter('animeReducer', {imageShow: false})}
                 images={[{src: state.animeReducer.animeInfo.url_image, alt: state.animeReducer.animeInfo.name}]}
             />
 
@@ -62,8 +68,7 @@ const ModalAnime = ({state, dispatch}) => {
                    }
             >
 
-                <ModalHeader toggle={() => dispatch.setter('animeReducer', {modalAnime: false})}>Информация о твоей
-                    анимешке</ModalHeader>
+                <ModalHeader toggle={() => dispatch.setter('animeReducer', {modalAnime: false})}>Информация о твоей анимешке</ModalHeader>
                 <ModalBody>
 
                     <LoadingOverlay
@@ -76,27 +81,29 @@ const ModalAnime = ({state, dispatch}) => {
 
                         <div>
                             {/*{*/}
-                                {/*JSON.stringify(state.animeReducer.animeInfo)*/}
+                            {/*JSON.stringify(state.animeReducer.animeInfo)*/}
                             {/*}*/}
 
                             <FormGroup row>
 
                                 <Label for="nameAnime" sm={2}>Название</Label>
                                 <Col sm={10}>
-                                    <Input bsSize="sm" type="text" name="nameAnime" id="nameAnime" placeholder="Название анимешки"
+                                    <Input bsSize="sm" type="text" name="nameAnime" id="nameAnime"
+                                           placeholder="Название анимешки"
                                            value={state.animeReducer.animeInfo.name}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {name: e.target.value}) }) }
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {name: e.target.value})})}
                                     />
                                 </Col>
                                 <Label for="genre" sm={2}>Жанр</Label>
                                 <Col sm={10}>
                                     <Input type="select" name="genre" id="genre"
                                            bsSize="sm" value={state.animeReducer.animeInfo.id_genre}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {id_genre: e.target.value}) }) }>
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {id_genre: e.target.value})})}>
                                         {
-                                            state.animeReducer.genreList
+                                            (state.animeReducer.genreList || [])
                                                 .map(
-                                                    (item, idx) => <option key={idx} value={item.id}>{item.name}</option>
+                                                    (item, idx) => <option key={idx}
+                                                                           value={item.id}>{item.name}</option>
                                                 )
                                         }
                                     </Input>
@@ -104,21 +111,22 @@ const ModalAnime = ({state, dispatch}) => {
                                 <Label for="description" sm={2}>Описание</Label>
                                 <Col sm={10}>
                                     <Input type="textarea" name="description" id="description"
-                                           style={ {marginBottom: '7px'} }
+                                           style={{marginBottom: '7px'}}
                                            bsSize="sm"
                                            value={state.animeReducer.animeInfo.description}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {description: e.target.value}) }) }>
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {description: e.target.value})})}>
                                     </Input>
                                 </Col>
                                 <Label for="col_season" sm={2}>Кол. сезонов</Label>
                                 <Col sm={2}>
                                     <Input type="select" name="col_season" id="col_season"
                                            bsSize="sm" value={state.animeReducer.animeInfo.col_season}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {col_season: e.target.value}) }) }>
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_season: e.target.value})})}>
                                         {
                                             Array.apply(null, {length: 20}).map(Number.call, Number)
                                                 .map(
-                                                    (item, idx) => <option key={idx} value={item+1}>{item+1}</option>
+                                                    (item, idx) => <option key={idx}
+                                                                           value={item + 1}>{item + 1}</option>
                                                 )
                                         }
                                     </Input>
@@ -127,25 +135,24 @@ const ModalAnime = ({state, dispatch}) => {
                                 <Col sm={2}>
                                     <Input type="select" name="col_part" id="col_part"
                                            bsSize="sm" value={state.animeReducer.animeInfo.col_part}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {col_part: e.target.value}) }) }>
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_part: e.target.value})})}>
                                         {
                                             Array.apply(null, {length: 2000}).map(Number.call, Number)
                                                 .map(
-                                                    (item, idx) => <option key={idx} value={item+1}>{item+1}</option>
+                                                    (item, idx) => <option key={idx}
+                                                                           value={item + 1}>{item + 1}</option>
                                                 )
                                         }
                                     </Input>
                                 </Col>
-                                <Col sm={4} />
-
-                                {/**/}
+                                <Col sm={4}/>
 
                                 {
                                     state.animeReducer.animeInfo.url_image ?
                                         <Col sm={2}>
-                                            <Button style={ {paddingLeft: '0px'} }
+                                            <Button style={{paddingLeft: '0px'}}
                                                     color="link"
-                                                    onClick={ () => dispatch.setter('animeReducer', { imageShow : true }) }>
+                                                    onClick={() => dispatch.setter('animeReducer', {imageShow: true})}>
                                                 Картинка
                                             </Button>
                                         </Col>
@@ -153,9 +160,10 @@ const ModalAnime = ({state, dispatch}) => {
                                         <Label for="imageAnime" sm={2}>Картинка</Label>
                                 }
                                 <Col sm={10}>
-                                    <Input bsSize="sm" type="text" name="imageAnime" id="imageAnime" placeholder="ссылка на картинку"
+                                    <Input bsSize="sm" type="text" name="imageAnime" id="imageAnime"
+                                           placeholder="ссылка на картинку"
                                            value={state.animeReducer.animeInfo.url_image}
-                                           onChange={ (e) => dispatch.setter('animeReducer', { animeInfo: Object.assign(state.animeReducer.animeInfo, {url_image: e.target.value}) }) }
+                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {url_image: e.target.value})})}
                                     />
                                 </Col>
 
@@ -181,7 +189,16 @@ const ModalAnime = ({state, dispatch}) => {
                     </Button>{' '}
                     <Button color="primary"
                             disabled={state.animeReducer.isProgressInfo}
-                            onClick={() => alert('3')}
+                            onClick={() => {
+                                    dispatch.setter('animeReducer', { modalAnime: false, isProgressAllList: true });
+                                    editMyListAnime({state, dispatch})
+                                        .then(
+                                            (result) => {
+                                                getAllListAnime({state, dispatch}, true);
+                                            }
+                                        )
+                                }
+                            }
                             size="sm">
                         Внести изменение
                     </Button>{' '}
