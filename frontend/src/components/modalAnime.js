@@ -5,13 +5,29 @@ import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import LoadingOverlay from "react-loading-overlay";
 import {infoMyListAnime, remoteMyListAnime} from "../services/serviceAnime";
 
+import ModalConfirm from './modalConfirm';
+
 const ModalAnime = ({state, dispatch}) => {
 
     return (
         <div>
 
+            <ModalConfirm isOpen={state.animeReducer.modalConfirm}
+                          text={'Удалить запись?'}
+                          success={() => {
+                              dispatch.setter('animeReducer', {
+                                  modalConfirm: false,
+                                  modalAnime: false,
+                                  isProgressAllList: true
+                              });
+                              remoteMyListAnime({state, dispatch}, state.animeReducer.idSelectAnime);
+                          }
+                          }
+                          cancel={() => dispatch.setter('animeReducer', {modalConfirm: false})}/>
+
             <Modal isOpen={state.animeReducer.modalAnime}
-                   toggle={ () => {} }
+                   toggle={() => {
+                   }}
                    size={'lg'}
                    onOpened={
                        () => {
@@ -25,7 +41,9 @@ const ModalAnime = ({state, dispatch}) => {
                        }
                    }
             >
-                <ModalHeader toggle={() => dispatch.setter('animeReducer', { modalAnime: false  }) }>Информация о твоей анимешке</ModalHeader>
+
+                <ModalHeader toggle={() => dispatch.setter('animeReducer', {modalAnime: false})}>Информация о твоей
+                    анимешке</ModalHeader>
                 <ModalBody>
 
                     <LoadingOverlay
@@ -46,12 +64,12 @@ const ModalAnime = ({state, dispatch}) => {
 
                 </ModalBody>
                 <ModalFooter>
+
                     <Button color="warning"
-                            style={ { left: '16px', position: 'absolute' } }
+                            style={{left: '16px', position: 'absolute'}}
                             onClick={
                                 () => {
-                                    dispatch.setter('animeReducer', {modalAnime: false, isProgressAllList: true});
-                                    remoteMyListAnime({state, dispatch}, state.animeReducer.idSelectAnime);
+                                    dispatch.setter('animeReducer', {modalConfirm: true});
                                 }
                             }
                             disabled={state.animeReducer.isProgressInfo}
@@ -65,7 +83,7 @@ const ModalAnime = ({state, dispatch}) => {
                         Внести изменение
                     </Button>{' '}
                     <Button color="secondary"
-                            onClick={() => dispatch.setter('animeReducer', { modalAnime: false  }) }
+                            onClick={() => dispatch.setter('animeReducer', {modalAnime: false})}
                             size="sm">
                         Закрыть
                     </Button>

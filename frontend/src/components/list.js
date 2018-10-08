@@ -101,6 +101,7 @@ const List = ({state, dispatch}) => {
                                                     state.loginReducer.isAuth ? (
                                                         item.isNoAdd === 0 ?
                                                             <td style={{cursor: 'pointer'}} onClick={() => {
+                                                                dispatch.setter('animeReducer', { isProgressAllList: true } );
                                                                 addMyListAnime({state, dispatch}, item.id);
                                                             }}>
                                                                 <FaPlus/>
