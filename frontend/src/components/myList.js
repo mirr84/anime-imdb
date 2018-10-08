@@ -61,7 +61,6 @@ const MyList = ({state, dispatch}) => {
                     </th>
                     <th>Жанр</th>
                     <th>Сезоны/Серии</th>
-                    <th>Кнопки</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +74,6 @@ const MyList = ({state, dispatch}) => {
                                     <td>{item.name}</td>
                                     <td>{item.genre}</td>
                                     <td>{item.col_season}/{item.col_part}</td>
-                                    <td></td>
                                 </tr>
                         )
                 }

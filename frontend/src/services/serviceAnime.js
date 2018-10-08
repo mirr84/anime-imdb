@@ -62,3 +62,13 @@ export const infoMyListAnime = (props, id) =>
             (resp) => resp.data[0],
             (err) => err.response.data
         )
+
+export const autocompleteGenre = (props, name) =>
+    axios.get(siteUrl + '/autocomplete/genre', {
+            params: { name }
+        }
+    )
+        .then(
+            (resp) => resp.data,
+            (err) => [] // err.response.data
+        )

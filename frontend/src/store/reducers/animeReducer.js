@@ -11,8 +11,8 @@ const initState = {
     modalAnime: false,
     idSelectAnime: null,
     typeList: 'table',
-    animeInfo: {}
-
+    animeInfo: {},
+    genreList: []
 }
 
 export const animeReducer = (state = getLocalStorage('animeReducer', initState), action) => {
