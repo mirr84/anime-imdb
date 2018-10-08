@@ -7,6 +7,7 @@ import {autocompleteGenre, infoMyListAnime, remoteMyListAnime} from "../services
 
 import ModalConfirm from './modalConfirm';
 import lifecycle from "react-pure-lifecycle";
+import Viewer from 'react-viewer';
 
 const methods = {
     componentDidMount(props) {
@@ -34,6 +35,12 @@ const ModalAnime = ({state, dispatch}) => {
                           }
                           }
                           cancel={() => dispatch.setter('animeReducer', {modalConfirm: false})}/>
+
+            <Viewer
+                visible={state.animeReducer.imageShow}
+                onClose={() => dispatch.setter('animeReducer', { imageShow : false }) }
+                images={[{src: state.animeReducer.animeInfo.url_image, alt: state.animeReducer.animeInfo.name}]}
+            />
 
             <Modal isOpen={state.animeReducer.modalAnime}
                    toggle={() => {
@@ -128,10 +135,16 @@ const ModalAnime = ({state, dispatch}) => {
                                 </Col>
                                 <Col sm={4} />
 
+                                {/**/}
+
                                 {
                                     state.animeReducer.animeInfo.url_image ?
                                         <Col sm={2}>
-                                            <Button style={ {'padding-left': '0px'} } color="link" >Картинка</Button>
+                                            <Button style={ {'padding-left': '0px'} }
+                                                    color="link"
+                                                    onClick={ () => dispatch.setter('animeReducer', { imageShow : true }) }>
+                                                Картинка
+                                            </Button>
                                         </Col>
                                         :
                                         <Label for="imageAnime" sm={2}>Картинка</Label>

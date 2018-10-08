@@ -15,7 +15,6 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import './index.css';
 
-
 import App from "./App";
 
 import axios from "axios";
