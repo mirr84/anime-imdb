@@ -31,6 +31,7 @@ const Menu = ({state, dispatch}) =>
     (
 
 <SideNav
+    style={ {position: 'fixed'} }
     onSelect={(selected) => {
         // Add your code here
     }}
