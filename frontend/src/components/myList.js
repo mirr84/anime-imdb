@@ -24,7 +24,7 @@ const MyList = ({state, dispatch}) => {
                        onChange={
                            (e) => {
                                dispatch.setter('animeReducer', {filter: {name: e.target.value}});
-                               getAllListAnime({state, dispatch});
+                               getAllListAnime({state, dispatch}, true);
                            }
                        }
                        onBlur={
