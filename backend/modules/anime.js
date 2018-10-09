@@ -39,7 +39,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                                     " `col_season`, `col_part`, " +
                                     "`url_image` " +
                             "FROM `" + db_config.database + "`.`anime` `a` " +
-                            "WHERE `a`.`only_user` = '" + (only_user?id_user:0) + "' AND `a`.`name` LIKE '%" + name + "%' " + (only_user?"and `a`.`id_origin_anime` != 0":"")
+                            "WHERE `a`.`only_user` = '" + (only_user?id_user:0) + "' AND `a`.`name` LIKE '%" + name + "%' " + (only_user?"AND (`a`.`id_origin_anime` != 0 OR `a`.`id_origin_anime` = 0)":"")
                         )
             })
             .then((rows)=>{
@@ -204,7 +204,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
                 })
                 .then((rows)=>{
-                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1 && rows[0].id_user === anime.only_user) {
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1 && (!anime.id || rows[0].id_user === anime.only_user)) {
                         // ничего не делаем
                         return rows;
                     } else {
@@ -229,7 +229,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                     */
 
                     if (anime.id) {
-                        connection.query("UPDATE `" + db_config.database + "`.`anime` " +
+                        return connection.query("UPDATE `" + db_config.database + "`.`anime` " +
                             "SET `id_genre` = '" + anime.id_genre + "', " +
                                 "`name` = '" + anime.name + "', " +
                                 "`description` = '" + anime.description + "', " +
@@ -238,10 +238,24 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                                 "`url_image` = '" + anime.url_image + "'" +
                             "WHERE `id` = '" + anime.id + "' AND `only_user` = '" + rows[0].id_user + "'");
                     } else {
-
+                        return connection.query(
+                            "INSERT INTO  `" + db_config.database + "`.`anime` " +
+                              "(`id_genre`, " +
+                               "`name`, " +
+                               "`description`, " +
+                               "`col_season`, " +
+                               "`col_part`, " +
+                               "`url_image`, " +
+                               "`only_user`) VALUES " +
+                             "('" + anime.id_genre + "', " +
+                              "'" + anime.name + "',  " +
+                              "'" + (anime.description || '') + "', " +
+                              "'" + anime.col_season + "', " +
+                              "'" + anime.col_part + "', " +
+                              "'" + (anime.url_image || '') + "', " +
+                              "'" + rows[0].id_user + "')"
+                        );
                     }
-
-                    return rows;
                 })
                 .then((rows) => {
                     res.status(200).send(rows);

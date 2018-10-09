@@ -57,18 +57,27 @@ const ModalAnime = ({state, dispatch}) => {
                    size={'lg'}
                    onOpened={
                        () => {
-                           dispatch.setter('animeReducer', {isProgressInfo: true});
-                           infoMyListAnime({state, dispatch}, state.animeReducer.idSelectAnime)
-                               .then(
-                                   (result) => {
-                                       dispatch.setter('animeReducer', {animeInfo: result, isProgressInfo: false});
-                                   }
-                               )
+                           if (state.animeReducer.idSelectAnime) {
+                               dispatch.setter('animeReducer', {isProgressInfo: true});
+                               infoMyListAnime({state, dispatch}, state.animeReducer.idSelectAnime)
+                                   .then(
+                                       (result) => {
+                                           dispatch.setter('animeReducer', {animeInfo: result, isProgressInfo: false});
+                                       }
+                                   )
+                           } else {
+                               dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {id_genre: 1, col_season: 1, col_part: 1})})
+                           }
                        }
                    }
             >
 
-                <ModalHeader toggle={() => dispatch.setter('animeReducer', {modalAnime: false})}>Информация о твоей анимешке</ModalHeader>
+                <ModalHeader toggle={() => dispatch.setter('animeReducer', {modalAnime: false})}>
+                    {
+                        state.animeReducer.idSelectAnime ? 'Редактирование о твоей анимешке' : 'Создание новой своей анимешки'
+                    }
+                </ModalHeader>
+
                 <ModalBody>
 
                     <LoadingOverlay
@@ -176,19 +185,23 @@ const ModalAnime = ({state, dispatch}) => {
                 </ModalBody>
                 <ModalFooter>
 
-                    <Button color="warning"
-                            style={{left: '16px', position: 'absolute'}}
-                            onClick={
-                                () => {
-                                    dispatch.setter('animeReducer', {modalConfirm: true});
-                                }
-                            }
-                            disabled={state.animeReducer.isProgressInfo}
-                            size="sm">
-                        Удалить из моего списка
-                    </Button>{' '}
+                    {
+                        state.animeReducer.idSelectAnime ?
+                            <Button color="warning"
+                                    style={{left: '16px', position: 'absolute'}}
+                                    onClick={
+                                        () => {
+                                            dispatch.setter('animeReducer', {modalConfirm: true});
+                                        }
+                                    }
+                                    disabled={state.animeReducer.isProgressInfo}
+                                    size="sm">
+                                Удалить из моего списка
+                            </Button> : ''
+                    }
+
                     <Button color="primary"
-                            disabled={state.animeReducer.isProgressInfo}
+                            disabled={state.animeReducer.isProgressInfo || !state.animeReducer.animeInfo.name}
                             onClick={() => {
                                     dispatch.setter('animeReducer', { modalAnime: false, isProgressAllList: true });
                                     editMyListAnime({state, dispatch})
@@ -200,13 +213,17 @@ const ModalAnime = ({state, dispatch}) => {
                                 }
                             }
                             size="sm">
-                        Внести изменение
-                    </Button>{' '}
+                        { state.animeReducer.idSelectAnime ? 'Внести изменение' : 'Создать' }
+                    </Button>
+
+                    {' '}
+
                     <Button color="secondary"
                             onClick={() => dispatch.setter('animeReducer', {modalAnime: false})}
                             size="sm">
                         Закрыть
                     </Button>
+
                 </ModalFooter>
             </Modal>
 

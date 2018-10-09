@@ -80,7 +80,9 @@ const Menu = ({state, dispatch}) =>
                         state.loginReducer.isAuth ?
                             <NavItem eventKey="auth/exit"
                                      onClick={() => {
-                                         alert('пока выход не работает, бугага =)');
+                                         dispatch.setter('loginReducer', { password: '',  isAuth: false, token: '' } );
+                                         dispatch.setter('menuReducer', {item: ''});
+                                         goToSection({state, dispatch}, 'main');
                                      }}
                             >
                                 <NavText>
