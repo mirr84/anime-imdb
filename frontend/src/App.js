@@ -13,6 +13,7 @@ import MyList from './components/myList';
 import List from './components/list';
 
 import ModalAnime from './components/modalAnime';
+import ModalAnimeRegSee from './components/modalAnimeRegSee';
 
 import {ToastContainer, toast} from "react-toastify";
 import {Container} from 'reactstrap';
@@ -35,6 +36,7 @@ const App = ({state, dispatch}) => {
             <ToastContainer autoClose={8000} position={toast.POSITION.TOP_RIGHT}/>
 
             <ModalAnime />
+            <ModalAnimeRegSee />
 
             <Menu/>
 

@@ -8,7 +8,10 @@ const initState = {
     isProgressInfo: false,
 
     filter: { name: '' },
+
     modalAnime: false,
+    modalAnimeRegSee: false,
+
     idSelectAnime: null,
     typeList: 'table',
     animeInfo: {},

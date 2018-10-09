@@ -14,8 +14,8 @@ const methods = {
     }
 }
 
-const openFronShow = () => {
-    alert('просмотр инфы');
+const openFromShow = (props, idSelectAnime) => {
+    props.dispatch.setter('animeReducer', { animeInfo: {}, idSelectAnime, modalAnimeRegSee: true } );
 }
 
 const MyList = ({state, dispatch}) => {
@@ -77,10 +77,10 @@ const MyList = ({state, dispatch}) => {
                         .map(
                             (item, idx) =>
                                 <tr style={ {cursor: 'pointer'} } key={idx}>
-                                    <th onClick={ (e) => openFronShow({state, dispatch}) } scope="row">{idx + 1}</th>
-                                    <td onClick={ (e) => openFronShow({state, dispatch}) } >{item.name}</td>
-                                    <td onClick={ (e) => openFronShow({state, dispatch}) } >{item.genre}</td>
-                                    <td onClick={ (e) => openFronShow({state, dispatch}) } >{item.col_season}/{item.col_part}</td>
+                                    <th onClick={ (e) => openFromShow({state, dispatch}, item.id) } scope="row">{idx + 1}</th>
+                                    <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.name}</td>
+                                    <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.genre}</td>
+                                    <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.col_season}/{item.col_part}</td>
                                     <td onClick={
                                             (e) => {
                                                 if (item.url_image) {
