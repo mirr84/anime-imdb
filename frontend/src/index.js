@@ -13,7 +13,6 @@ import 'react-viewer/dist/index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import 'react-widgets/dist/css/react-widgets.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import './index.css';
 
