@@ -7,6 +7,10 @@ import LoadingOverlay from "react-loading-overlay";
 import lifecycle from "react-pure-lifecycle";
 import {infoMyListAnime} from "../services/serviceAnime";
 
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'moment/locale/ru';
+
 const methods = {
     componentDidMount(props) {
     }
@@ -55,6 +59,12 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
                         {
                             state.animeReducer.animeInfo.last_date
                         }
+
+                        <DatePicker
+                            selected={moment()}
+                            onChange={(e) => { console.log(e) }}
+                            dateFormat="DD.MM.YYYY"
+                        />
 
                     </LoadingOverlay>
 

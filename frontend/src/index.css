@@ -1,3 +1,4 @@
-.modal-content, .btn, .form-control, .card, .card-img-top {
+.modal-content, .btn, .form-control, .card, .card-img-top,
+.react-datepicker, .react-datepicker__day--selected {
     border-radius: 0px;
 }
