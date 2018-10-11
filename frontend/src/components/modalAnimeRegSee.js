@@ -1,7 +1,18 @@
 import React from 'react';
 import {connector} from "../store/utils/connector";
 
-import {Button, Col, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {
+    Button,
+    ButtonGroup,
+    Col,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from "reactstrap";
 import LoadingOverlay from "react-loading-overlay";
 
 import lifecycle from "react-pure-lifecycle";
@@ -23,7 +34,7 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
 
             <Modal isOpen={state.animeReducer.modalAnimeRegSee}
                    toggle={() => {}}
-                   size={'xs'}
+                   size={'lg'}
                    onOpened={
                        () => {
                                dispatch.setter('animeReducer', {isProgressInfo: true});
@@ -53,22 +64,45 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
 
                                 <FormGroup row>
 
-                                    <Label for="last_date" sm={8}>Дата выхода последней просмотренной</Label>
-                                    <Col sm={4}>
+                                    <Label for="last_date" sm={6}>Дата выхода последней просмотренной</Label>
+                                    <Col sm={2}>
                                         <DatePicker
                                             id="last_date"
                                             name="last_date"
                                             className={'form-control-sm form-control'}
                                             selected={
-                                                state.animeReducer.animeInfo.last_date === '0000-00-00' ? moment() : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD')
+                                                state.animeReducer.animeInfo.last_date === '0000-00-00' || !state.animeReducer.animeInfo.last_date ?
+                                                    moment() : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD')
                                             }
                                             onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_date: e.format('YYYY-MM-DD')})})}
                                             dateFormat="DD.MM.YYYY"
                                         />
                                     </Col>
-
-                                    <Label for="last_see" sm={8}>Номер серии</Label>
                                     <Col sm={4}>
+                                        <ButtonGroup>
+                                            <Button size="sm"
+                                                    onClick={
+                                                        () =>
+                                                            dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo,
+                                                                    {last_date: (state.animeReducer.animeInfo.last_date === '0000-00-00' || !state.animeReducer.animeInfo.last_date ?
+                                                                            moment() : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD')).add(1, 'w').format('YYYY-MM-DD')}
+                                                                    )})
+                                                    }
+                                            >+1Н</Button>
+                                            <Button size="sm"
+                                                    onClick={
+                                                        () =>
+                                                            dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo,
+                                                                    {last_date: (state.animeReducer.animeInfo.last_date === '0000-00-00' || !state.animeReducer.animeInfo.last_date ?
+                                                                            moment() : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD')).add(1, 'M').format('YYYY-MM-DD')}
+                                                                )})
+                                                    }
+                                            >+1М</Button>
+                                        </ButtonGroup>
+                                    </Col>
+
+                                    <Label for="last_see" sm={6}>Номер серии</Label>
+                                    <Col sm={2}>
                                         <Input type="select" name="last_see" id="last_see"
                                                bsSize="sm" value={state.animeReducer.animeInfo.last_see}
                                                onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_see: e.target.value})})}>
@@ -80,6 +114,12 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
                                                     )
                                             }
                                         </Input>
+                                    </Col>
+                                    <Col sm={4}>
+                                    </Col>
+
+                                    <Col sm={12}>
+                                        <hr/>
                                     </Col>
 
                                     <Col sm={12}>

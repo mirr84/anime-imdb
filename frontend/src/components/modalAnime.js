@@ -109,7 +109,7 @@ const ModalAnime = ({state, dispatch}) => {
                                            bsSize="sm" value={state.animeReducer.animeInfo.id_genre}
                                            onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {id_genre: e.target.value})})}>
                                         {
-                                            (state.animeReducer.genreList || [])
+                                            (!state.animeReducer.genreList || !Array.isArray(state.animeReducer.genreList) ? [] : state.animeReducer.genreList )
                                                 .map(
                                                     (item, idx) => <option key={idx}
                                                                            value={item.id}>{item.name}</option>
