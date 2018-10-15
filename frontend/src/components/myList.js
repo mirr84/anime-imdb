@@ -7,6 +7,7 @@ import lifecycle from "react-pure-lifecycle";
 import LoadingOverlay from 'react-loading-overlay';
 
 import {FaPencilAlt, FaImage} from 'react-icons/fa';
+import moment from 'moment';
 
 const methods = {
     componentDidMount(props) {
@@ -65,6 +66,9 @@ const MyList = ({state, dispatch}) => {
                     <th>
                         Название
                     </th>
+                    <th>
+                        Последняя
+                    </th>
                     <th>Жанр</th>
                     <th>Сезоны/Серии</th>
                     <th></th>
@@ -79,6 +83,9 @@ const MyList = ({state, dispatch}) => {
                                 <tr style={ {cursor: 'pointer'} } key={idx}>
                                     <th onClick={ (e) => openFromShow({state, dispatch}, item.id) } scope="row">{idx + 1}</th>
                                     <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.name}</td>
+                                    <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >
+                                        {item.last_see} ({ moment(item.last_date, 'YYYY-MM-DD').format('DD.MM.YYYY') })
+                                    </td>
                                     <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.genre}</td>
                                     <td onClick={ (e) => openFromShow({state, dispatch}, item.id) } >{item.col_season}/{item.col_part}</td>
                                     <td onClick={

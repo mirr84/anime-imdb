@@ -6,7 +6,6 @@ import {
     ButtonGroup,
     Col,
     FormGroup,
-    Input,
     Label,
     Modal,
     ModalBody,
@@ -16,7 +15,7 @@ import {
 import LoadingOverlay from "react-loading-overlay";
 
 import lifecycle from "react-pure-lifecycle";
-import {infoMyListAnime} from "../services/serviceAnime";
+import {editMySeeAnime, getAllListAnime, infoMyListAnime} from "../services/serviceAnime";
 
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -75,7 +74,7 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
                                                 state.animeReducer.animeInfo.last_date === '0000-00-00' || !state.animeReducer.animeInfo.last_date ?
                                                     moment() : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD')
                                             }
-                                            onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_date: e.format('YYYY-MM-DD')})})}
+                                            onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_date: (e || moment()).format('YYYY-MM-DD') })})}
                                             dateFormat="DD.MM.YYYY"
                                         />
                                     </Col>
@@ -126,9 +125,9 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
                                         <hr/>
                                     </Col>
 
-                                    <Col sm={12}>
-                                        Сообщение
-                                    </Col>
+                                    {/*<Col sm={12}>*/}
+                                        {/*Сообщение*/}
+                                    {/*</Col>*/}
 
                                 </FormGroup>
 
@@ -139,7 +138,22 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
 
                     <Button color="primary"
                             disabled={state.animeReducer.isProgressInfo}
-                            onClick={() => {}
+                            onClick={
+                                () => {
+                                    dispatch.setter('animeReducer',
+                                        { animeInfo: Object.assign(state.animeReducer.animeInfo,
+                                                { last_date: state.animeReducer.animeInfo.last_date === '0000-00-00' || !state.animeReducer.animeInfo.last_date ?
+                                                        moment().add(1, 'd').format('YYYY-MM-DD') : moment(state.animeReducer.animeInfo.last_date, 'YYYY-MM-DD').add(1, 'd').format('YYYY-MM-DD') }
+                                            )
+                                        });
+                                    editMySeeAnime({state, dispatch})
+                                        .then(
+                                            (result) => {
+                                                getAllListAnime({state, dispatch}, true);
+                                            }
+                                        );
+                                    dispatch.setter('animeReducer', {modalAnimeRegSee: false});
+                                }
                             }
                             size="sm">
                         Внести изменение
@@ -148,7 +162,7 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
                     {' '}
 
                     <Button color="secondary"
-                            onClick={() => dispatch.setter('animeReducer', {modalAnimeRegSee: false})}
+                            onClick={ () => dispatch.setter('animeReducer', {modalAnimeRegSee: false}) }
                             size="sm">
                         Закрыть
                     </Button>

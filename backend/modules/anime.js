@@ -34,6 +34,7 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
                 return  connection.query(
                             "SELECT `id`, " +
                                     "`name`, " +
+                                    "`last_see`, `last_date`, " +
                                     "(SELECT `name` FROM `" + db_config.database + "`.`genre` `b` WHERE `b`.`id` = `a`.`id_genre`) AS `genre`, " +
                                     "(SELECT COUNT(*) FROM `" + db_config.database + "`.`anime` `b` WHERE `a`.`id` = `b`.`id_origin_anime` AND `b`.`only_user` = '" + id_user + "') AS `isNoAdd`, " +
                                     " `col_season`, `col_part`, " +
@@ -270,4 +271,64 @@ module.exports.initAuthApi = (app, mysql, db_config) => {
 
     });
 
+    app.post('/anime/see', (req, res) => {
+
+        let token = req.headers.sessionid;
+        let anime = req.body.anime;
+
+        if (!token) {
+            res.status(401).send({msg: genMsg('ошибка токена')});
+        } else {
+
+            let connection;
+            mysql.createConnection(db_config)
+                .then((conn)=>{
+                    connection = conn;
+                    return connection.query("SELECT COUNT(*) `c`, `id_user` FROM `" + db_config.database + "`.`token` `t` WHERE `t`.`token` = '" + token + "'");
+                })
+                .then((rows)=>{
+                    if (Array.isArray(rows) && rows.length === 1 && rows[0].c === 1 && (!anime.id || rows[0].id_user === anime.only_user)) {
+                        // ничего не делаем
+                        return rows;
+                    } else {
+                        throw 'ты кто такой?';
+                    }
+                })
+                .then((rows) => {
+                    /*
+                        {
+                            id: 131,
+                            id_genre: 5,
+                            name: 'Сериал Лог Горизонт/Log Horizon',
+                            description: '',
+                            col_season: 1,
+                            col_part: 1,
+                            last_see: 0,
+                            last_date: '0000-00-00',
+                            url_image: '',
+                            only_user: 10,
+                            id_origin_anime: 1
+                        }
+                    */
+
+                    if (anime.id) {
+                        return connection.query("UPDATE `" + db_config.database + "`.`anime` " +
+                            "SET " +
+                            "`last_see` = '" + anime.last_see + "', " +
+                            "`last_date` = '" + anime.last_date + "'" +
+                            "WHERE `id` = '" + anime.id + "' AND `only_user` = '" + rows[0].id_user + "'");
+                    }
+                })
+                .then((rows) => {
+                    res.sendStatus(200);
+                    connection.end();
+                })
+                .catch((error) => {
+                    if (connection && connection.end) connection.end();
+                    res.status(401).send({msg: genMsg(error)});
+                });
+
+        }
+
+    });
 }

@@ -86,3 +86,17 @@ export const editMyListAnime = (props) =>
             (resp) => resp.data,
             (err) => err.response.data
         )
+
+export const editMySeeAnime = (props) =>
+    axios.post(siteUrl + '/anime/see',
+        {
+            anime: props.state.animeReducer.animeInfo
+        },
+        {
+            headers: {'sessionId': props.state.loginReducer.token}
+        }
+    )
+        .then(
+            (resp) => resp.data,
+            (err) => err.response.data
+        )
