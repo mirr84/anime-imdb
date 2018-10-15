@@ -15,6 +15,7 @@ import ModalConfirm from './modalConfirm';
 import lifecycle from "react-pure-lifecycle";
 
 import Viewer from 'react-viewer';
+import CurrencyInput from "react-currency-input";
 
 const methods = {
     componentDidMount(props) {
@@ -128,31 +129,23 @@ const ModalAnime = ({state, dispatch}) => {
                                 </Col>
                                 <Label for="col_season" sm={2}>Кол. сезонов</Label>
                                 <Col sm={2}>
-                                    <Input type="select" name="col_season" id="col_season"
-                                           bsSize="sm" value={state.animeReducer.animeInfo.col_season}
-                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_season: e.target.value})})}>
-                                        {
-                                            Array.apply(null, {length: 20}).map(Number.call, Number)
-                                                .map(
-                                                    (item, idx) => <option key={idx}
-                                                                           value={item + 1}>{item + 1}</option>
-                                                )
-                                        }
-                                    </Input>
+                                    <CurrencyInput name="col_season" id="col_season"
+                                                   value={state.animeReducer.animeInfo.col_season}
+                                                   onChangeEvent={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_season: e.target.value})})}
+                                                   className={'form-control form-control-sm'}
+                                                   precision={0}
+                                                   thousandSeparator={''}
+                                    />
                                 </Col>
                                 <Label for="col_part" sm={2}>Кол. серий</Label>
                                 <Col sm={2}>
-                                    <Input type="select" name="col_part" id="col_part"
-                                           bsSize="sm" value={state.animeReducer.animeInfo.col_part}
-                                           onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_part: e.target.value})})}>
-                                        {
-                                            Array.apply(null, {length: 2000}).map(Number.call, Number)
-                                                .map(
-                                                    (item, idx) => <option key={idx}
-                                                                           value={item + 1}>{item + 1}</option>
-                                                )
-                                        }
-                                    </Input>
+                                    <CurrencyInput name="col_part" id="col_part"
+                                                   value={state.animeReducer.animeInfo.col_part}
+                                                   onChangeEvent={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {col_part: e.target.value})})}
+                                                   className={'form-control form-control-sm'}
+                                                   precision={0}
+                                                   thousandSeparator={''}
+                                    />
                                 </Col>
                                 <Col sm={4}/>
 

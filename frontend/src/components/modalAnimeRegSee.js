@@ -21,6 +21,7 @@ import {infoMyListAnime} from "../services/serviceAnime";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/ru';
+import CurrencyInput from "react-currency-input";
 
 const methods = {
     componentDidMount(props) {
@@ -103,19 +104,22 @@ const ModalAnimeRegSee = ({state, dispatch}) => {
 
                                     <Label for="last_see" sm={6}>Номер серии</Label>
                                     <Col sm={2}>
-                                        <Input type="select" name="last_see" id="last_see"
-                                               bsSize="sm" value={state.animeReducer.animeInfo.last_see}
-                                               onChange={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_see: e.target.value})})}>
-                                            {
-                                                Array.apply(null, {length: 2000}).map(Number.call, Number)
-                                                    .map(
-                                                        (item, idx) => <option key={idx}
-                                                                               value={item + 1}>{item + 1}</option>
-                                                    )
-                                            }
-                                        </Input>
+                                        <CurrencyInput value={state.animeReducer.animeInfo.last_see}
+                                                       onChangeEvent={(e) => dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo, {last_see: e.target.value})})}
+                                                       className={'form-control form-control-sm'}
+                                                       precision={0}
+                                                       thousandSeparator={''}
+                                        />
                                     </Col>
                                     <Col sm={4}>
+                                        <Button size="sm"
+                                                onClick={
+                                                    () =>
+                                                        dispatch.setter('animeReducer', {animeInfo: Object.assign(state.animeReducer.animeInfo,
+                                                                {last_see: state.animeReducer.animeInfo.last_see + 1}
+                                                            )})
+                                                }
+                                        >+1</Button>
                                     </Col>
 
                                     <Col sm={12}>
