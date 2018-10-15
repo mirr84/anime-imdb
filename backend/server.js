@@ -17,9 +17,9 @@ const app  = express();
 const port = 8000;
 const db_config = {
     host: '87.236.19.149',
-    user: 'y913929d_anime',
-    password: '123456',
-    database: 'y913929d_anime'
+    user: '',
+    password: '',
+    database: ''
 }
 
 app.use(bodyParser.urlencoded({ extended: false }));
